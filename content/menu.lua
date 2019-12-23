@@ -56,12 +56,14 @@ function Menu:new()
             '"Se você não souber usar, sua arma será sua maior inimiga, mas se souber usar, ela se tornará a sua maior arma"'
         text = text
         local y = 50
+        y = y + UTIL.printw("Jogo da Arminha", Fonts.PressStart2P, 50, y, limit, "center", 5)
+        y = y + 50
         y = y + UTIL.printw(text, Fonts.PressStart2P, 50, y, limit, "center", 3)
         y = y + 200
         local x = UTIL.window.width / 2 - 100
         for n, i in ipairs(self.options) do
             if n == self.sel then
-                local w = Fonts.PressStart2P:getWidth("> ")
+                local w = Fonts.PressStart2P:getWidth("> ") * 3
                 y = y + UTIL.printw("> " .. i.opt, Fonts.PressStart2P, x - w, y, limit, "left", 3)
             else
                 y = y + UTIL.printw(i.opt, Fonts.PressStart2P, x, y, limit, "left", 3)
