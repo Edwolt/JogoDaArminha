@@ -1,18 +1,12 @@
 Fonts = Fonts or require "fonts"
 UTIL = UTIL or require "util"
 
---* Option Class
-local Option = {}
-Option.__index = Option
-
-function Option:new(opt, class)
-    local option = {
-        opt = opt,
+--* Option Table
+local function newOption(text, class)
+    return {
+        text = text,
         class = class
     }
-    setmetatable(option, self)
-
-    return option
 end
 
 --* Menu Class
@@ -22,8 +16,8 @@ Menu.__index = Menu
 function Menu:new()
     local menu = {
         options = {
-            Option:new("Jogar", "Game"),
-            Option:new("Creditos", "Credits")
+            newOption("Jogar", "Game"),
+            newOption("Creditos", "Credits")
         },
         sel = 1,
         wait = 0
@@ -64,9 +58,9 @@ function Menu:new()
         for n, i in ipairs(self.options) do
             if n == self.sel then
                 local w = Fonts.PressStart2P:getWidth("> ") * 3
-                y = y + UTIL.printw("> " .. i.opt, Fonts.PressStart2P, x - w, y, limit, "left", 3)
+                y = y + UTIL.printw("> " .. i.text, Fonts.PressStart2P, x - w, y, limit, "left", 3)
             else
-                y = y + UTIL.printw(i.opt, Fonts.PressStart2P, x, y, limit, "left", 3)
+                y = y + UTIL.printw(i.text, Fonts.PressStart2P, x, y, limit, "left", 3)
             end
         end
     end
