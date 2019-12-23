@@ -1,4 +1,4 @@
-Fonts = Fonts or require "font"
+Fonts = Fonts or require "fonts"
 UTIL = UTIL or require "util"
 
 --* Option Class

@@ -1,9 +1,9 @@
-Content = Content or require "content"
+Contents = Contents or require "contents"
 Modules = Modules or require "modules"
 
 local content
 function love.load()
-    content = Content:new()
+    content = Contents:new()
 end
 
 function love.draw()
@@ -13,7 +13,7 @@ end
 function love.update(dt)
     local change = content:update(dt)
     if change then
-        content = Content[change]:new()
+        content = Contents[change]:new()
     end
 end
 
@@ -21,7 +21,7 @@ function love.keypressed(key)
     if key == "escape" then
         local change = content:escape()
         if change then
-            content = Content[change]:new()
+            content = Contents[change]:new()
         end
     end
 end
