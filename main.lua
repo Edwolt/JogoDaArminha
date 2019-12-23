@@ -1,22 +1,26 @@
+Content = Content or require "content"
+Modules = Modules or require "modules"
+
+local content
 function love.load()
+    content = Content:new()
 end
 
 function love.draw()
+    content:draw()
 end
 
 function love.update(dt)
+    content = content:update(dt)
 end
 
 function love.keypressed(key)
     if key == "escape" then
-        love.event.quit()
+        content:escape()
     end
 end
 
 function love.keyreleased(key)
-    if key == "w" then
-        game.player:stopJump()
-    end
 end
 
 --[[
