@@ -1,5 +1,5 @@
 Fonts = Fonts or require "font"
---
+UTIL = UTIL or require "util"
 
 --[[ Game Class ]] local Game = {
     Player = require "game.player"
@@ -41,7 +41,11 @@ function Menu:new()
         local text =
             '"Se você não souber usar, sua arma será sua maior inimiga, mas se souber usar, ela se tornará a sua maior arma"'
         love.graphics.setFont(Fonts.PressStart2P)
-        love.graphics.printf(text, 10, 10, 100, "center", 0, 3, 3)
+        love.graphics.printf(text, 10, 50, UTIL.window.width / 3 - 20, "center", 0, 3)
+
+        local text = "Pressione <Enter> para jogar"
+        love.graphics.setFont(Fonts.PressStart2P)
+        love.graphics.printf(text, 10, UTIL.window.height - 100, UTIL.window.width / 2 - 20, "center", 0, 2)
     end
 
     function menu:escape()
