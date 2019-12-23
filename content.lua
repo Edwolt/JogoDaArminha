@@ -1,7 +1,8 @@
 Fonts = Fonts or require "font"
 UTIL = UTIL or require "util"
 
---[[ Game Class ]] local Game = {
+--* Game Class
+local Game = {
     Player = require "game.player"
 }
 
@@ -25,9 +26,9 @@ function Game:new()
 
     return game
 end
---
 
---[[ Menu Class ]] local Menu = {}
+--* Menu Class
+local Menu = {}
 function Menu:new()
     local menu = {}
     setmetatable(menu, self)
@@ -57,9 +58,11 @@ function Menu:new()
 
     return menu
 end
---
 
---[[ Content Wrapper ]] local Content = {Menu, Game}
+--* Credits Class
+
+--* Content Wrapper
+local Content = {Menu, Game}
 function Content:new()
     return Menu:new()
 end

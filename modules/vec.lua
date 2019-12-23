@@ -1,4 +1,4 @@
---[[ Vec Class ]] --
+--* Vec Class
 local Vec = {}
 Vec.__index = Vec
 

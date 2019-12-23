@@ -1,6 +1,7 @@
 Modules = Modules or require "modules"
 local Vec = Modules.Vec
 
+--* Player Class
 local Player = {}
 Player.__index = Player
 function Player:new()
@@ -22,6 +23,7 @@ function Player:new()
     end
 
     function player:draw() -- TODO
+        local realPos = self.pos * UTIL.game.scale
     end
 
     function player:update(dt)
