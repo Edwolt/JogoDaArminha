@@ -1,11 +1,16 @@
-local Player = {}
+Modules = Modules or require "modules"
+local Vec = Modules.Vec
 
+local Player = {}
+Player.__index = Player
 function Player:new()
     local player = {
-        weapon = 1
+        weapon = 1,
+        pos = Vec:new(),
+        vel = Vec:new(),
+        acel = Vec:new()
     }
     setmetatable(player, self)
-    self.__index = self
 
     function player:changeWeapon(weapon)
         -- 1: Fogo
@@ -14,6 +19,14 @@ function Player:new()
         if 1 <= weapon and weapon <= 3 then
             player.weapon = weapon
         end
+    end
+
+    function player:draw() -- TODO
+    end
+
+    function player:update(dt)
+        self.vel = self.vel + (self.acel * dt)
+        self.pos = self.pos + (self.pos * dt)
     end
 
     return player
