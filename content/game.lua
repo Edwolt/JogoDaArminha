@@ -15,10 +15,10 @@ function Game:new()
     end
 
     function game:update(dt)
-        return self
     end
 
     function game:escape()
+        return "Menu"
     end
 
     return game

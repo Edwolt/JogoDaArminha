@@ -1,7 +1,3 @@
-Content = Content or {}
-Content.Game = Content.Game or require "content.game"
-local Game = Content.Game
-
 Fonts = Fonts or require "font"
 UTIL = UTIL or require "util"
 
@@ -9,19 +5,12 @@ UTIL = UTIL or require "util"
 local Option = {}
 Option.__index = Option
 
-function Option:new(opt, class, param)
+function Option:new(opt, class)
     local option = {
         opt = opt,
-        param = param
+        class = class
     }
-
-    function option:func()
-        if self.param then
-            return class:new(table.unpack(self.param))
-        else
-            return class:new()
-        end
-    end
+    setmetatable(option, self)
 
     return option
 end
@@ -33,8 +22,8 @@ Menu.__index = Menu
 function Menu:new()
     local menu = {
         options = {
-            Option:new("Jogar", Game),
-            Option:new("Credits", Credits, {Menu})
+            Option:new("Jogar", "Game"),
+            Option:new("Creditos", "Credits")
         },
         sel = 1,
         wait = 0
@@ -43,7 +32,7 @@ function Menu:new()
 
     function menu:update(dt)
         if love.keyboard.isDown("return") then
-            return self.options[self.sel]:func()
+            return self.options[self.sel].class
         end
 
         if self.wait <= 0 then
@@ -58,8 +47,6 @@ function Menu:new()
             end
         end
         self.wait = self.wait - dt
-
-        return self
     end
 
     function menu:draw()

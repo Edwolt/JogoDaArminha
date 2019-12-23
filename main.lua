@@ -11,12 +11,18 @@ function love.draw()
 end
 
 function love.update(dt)
-    content = content:update(dt)
+    local change = content:update(dt)
+    if change then
+        content = Content[change]:new()
+    end
 end
 
 function love.keypressed(key)
     if key == "escape" then
-        content:escape()
+        local change = content:escape()
+        if change then
+            content = Content[change]:new()
+        end
     end
 end
 
