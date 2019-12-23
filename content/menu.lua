@@ -51,7 +51,7 @@ function Menu:new()
 
     function menu:draw()
         love.graphics.setFont(Fonts.PressStart2P)
-        local limit = (UTIL.window.width - 100)
+        local limit = UTIL.window.width - 100
         local text =
             '"Se você não souber usar, sua arma será sua maior inimiga, mas se souber usar, ela se tornará a sua maior arma"'
         text = text

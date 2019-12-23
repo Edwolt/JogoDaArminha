@@ -12,7 +12,16 @@ UTIL.game.width = UTIL.window.width / UTIL.game.scale
 
 --* Wrapper Function para love.graphic.printf
 function UTIL.printw(text, font, x, y, limit, align, scale)
-    love.graphics.setFont(font)
+    x = x or 0
+    y = y or 0
+    limit = limit or UTIL.window.width
+    align = align or "left"
+    scale = scale or 1
+
+    if font then
+        love.graphics.setFont(font)
+    end
+
     local font_width = font:getWidth(text)
     local font_height = font:getHeight()
     local text_height = scale * (font_width * scale / limit + 1) * font_height
