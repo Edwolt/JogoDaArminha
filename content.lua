@@ -6,11 +6,14 @@ UTIL = UTIL or require "util"
 }
 
 function Game:new()
-    local game = {}
+    local game = {
+        player = Game.Player:new()
+    }
     setmetatable(game, self)
     self.__index = self
 
     function game:draw()
+        self.player:draw()
     end
 
     function game:update(dt)
