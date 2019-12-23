@@ -56,26 +56,17 @@ function Menu:new()
             '"Se você não souber usar, sua arma será sua maior inimiga, mas se souber usar, ela se tornará a sua maior arma"'
         text = text
         local y = 50
-        y = y + self:printw(text, Fonts.PressStart2P, 50, y, limit, "center", 3)
+        y = y + UTIL.printw(text, Fonts.PressStart2P, 50, y, limit, "center", 3)
         y = y + 200
         local x = UTIL.window.width / 2 - 100
         for n, i in ipairs(self.options) do
             if n == self.sel then
                 local w = Fonts.PressStart2P:getWidth("> ")
-                y = y + self:printw("> " .. i.opt, Fonts.PressStart2P, x - w, y, limit, "left", 3)
+                y = y + UTIL.printw("> " .. i.opt, Fonts.PressStart2P, x - w, y, limit, "left", 3)
             else
-                y = y + self:printw(i.opt, Fonts.PressStart2P, x, y, limit, "left", 3)
+                y = y + UTIL.printw(i.opt, Fonts.PressStart2P, x, y, limit, "left", 3)
             end
         end
-    end
-
-    function menu:printw(text, font, x, y, limit, align, scale)
-        love.graphics.setFont(font)
-        local font_width = font:getWidth(text)
-        local font_height = font:getHeight()
-        local text_height = scale * (font_width * scale / limit + 1) * font_height
-        love.graphics.printf(text, x, y, limit / scale, align, 0, scale)
-        return text_height
     end
 
     function menu:escape()
