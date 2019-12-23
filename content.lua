@@ -1,8 +1,10 @@
-local Game = {
+Fonts = Fonts or require "font"
+--
+
+--[[ Game Class ]] local Game = {
     Player = require "game.player"
 }
 
--- Game Class
 function Game:new()
     local game = {}
     setmetatable(game, self)
@@ -20,9 +22,9 @@ function Game:new()
 
     return game
 end
+--
 
--- Menu Class
-local Menu = {}
+--[[ Menu Class ]] local Menu = {}
 function Menu:new()
     local menu = {}
     setmetatable(menu, self)
@@ -36,6 +38,10 @@ function Menu:new()
     end
 
     function menu:draw()
+        local text =
+            '"Se você não souber usar, sua arma será sua maior inimiga, mas se souber usar, ela se tornará a sua maior arma"'
+        love.graphics.setFont(Fonts.PressStart2P)
+        love.graphics.printf(text, 10, 10, 100, "center", 0, 3, 3)
     end
 
     function menu:escape()
@@ -44,9 +50,9 @@ function Menu:new()
 
     return menu
 end
+--
 
--- Content (Wrapper)
-local Content = {Menu, Game}
+--[[ Content Wrapper ]] local Content = {Menu, Game}
 function Content:new()
     return Menu:new()
 end

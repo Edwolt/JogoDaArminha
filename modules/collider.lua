@@ -2,7 +2,7 @@ Modules = Modules or {}
 Modules.Vec = require "modules.vec"
 local Vec = Modules.Vec
 
--- Collider Class
+--[[ Collider Class ]]--
 local Collider = {}
 
 -- (Vec, Vec)
@@ -46,7 +46,7 @@ function Collider:new(x1, y1, x2, y2)
     return collider
 end
 
--- Colliders Class
+--[[ Colliders Class ]]--
 local Colliders = {}
 function Colliders:new()
     local colliders = {vet = {}}
