@@ -48,7 +48,7 @@ end
 -- Content (Wrapper)
 local Content = {Menu, Game}
 function Content:new()
-    return Game
+    return Menu:new()
 end
 
 return Content
