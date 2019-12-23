@@ -1,9 +1,10 @@
 Modules = Modules or {}
-Modules.Vec = require "modules.vec"
+Modules.Vec = Modules.Vec or require "modules.vec"
 local Vec = Modules.Vec
 
 --* Collider Class
 local Collider = {}
+Collider.__index = Collider
 
 -- (Vec, Vec)
 -- (int, int, int, int)
@@ -30,7 +31,6 @@ function Collider:new(x1, y1, x2, y2)
         p2 = vec2 -- botton right
     }
     setmetatable(collider, self)
-    self.__index = self
 
     function collider:collision(other)
         if
@@ -48,10 +48,11 @@ end
 
 --* Colliders Class
 local Colliders = {}
+Colliders.__index = Colliders
+
 function Colliders:new()
     local colliders = {vet = {}}
     setmetatable(colliders, self)
-    self.__index = self
 
     -- (Vec, Vec)
     -- (int, int, int, int)

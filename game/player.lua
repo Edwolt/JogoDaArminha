@@ -4,6 +4,7 @@ local Vec = Modules.Vec
 --* Player Class
 local Player = {}
 Player.__index = Player
+
 function Player:new()
     local player = {
         weapon = 1,
