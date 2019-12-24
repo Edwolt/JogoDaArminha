@@ -26,30 +26,4 @@ function Bullet:new(weapon, pos, vel)
     return bullet
 end
 
--- --* Bullets Class
--- local Bullets = {}
--- Bullets.__index = Bullets
-
--- function Bullets:new()
---     local bullets = {vet = {}}
-
---     function bullets:add(pos, vel, weapon)
---         table.insert(self.vet, Bullet:new(pos, vel, weapon))
---     end
-
---     function bullets:draw()
---         for _,i in ipairs(self.vet) do
---             i:draw()
---         end
---     end
-
---     function bullets:update(dt)
---         for _,i in ipairs(self.vet) do
---             i:draw(dt)
---         end
---     end
-
---     return bullets
--- end
-
 return Bullet
