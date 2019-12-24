@@ -33,8 +33,8 @@ function Player:new()
     end
 
     function player:update(dt)
-        self.vel = self.vel + (self.acc * dt)
-        self.pos = self.pos + (self.vel * dt)
+        self.vel = self.vel + self.acc * dt
+        self.pos = self.pos + self.vel * dt
     end
 
     return player
