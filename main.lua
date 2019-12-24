@@ -1,5 +1,4 @@
 Contents = Contents or require "contents"
-Modules = Modules or require "modules"
 
 local content
 function love.load()

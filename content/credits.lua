@@ -1,7 +1,4 @@
 Fonts = Fonts or require "fonts"
-Content = Content or {}
-Content.Menu = Content.Menu or require "content.menu"
-local Menu = Content.Menu
 
 --* Line Table
 local function newLine(text, scale)
@@ -16,7 +13,7 @@ Credits = {
     lines = {
         newLine("Autores:", 5),
         newLine("Eduardo Souza Rocha"),
-        newLine("Victor Isaias de Almeida Rocha"),
+        newLine("Victor Isaias de Almeida Rocha")
     }
 }
 Credits.__index = Credits

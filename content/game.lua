@@ -1,12 +1,12 @@
 Modules = Modules or require "modules"
-local Vec = Modules.Vec
 local Array = Modules.Array
 
 --* Game Class
-local Game = {
-    Player = require "game.player",
-    Bullet = require "game.bullet"
-}
+Contents = Contents or {}
+Contents.Game = Contents.Game or {}
+local Game = Contents.Game
+Game.Player = Game.Player or require "game.player"
+Game.Bullet = Game.Bullet or require "game.bullet"
 
 Game.__index = Game
 
@@ -25,6 +25,9 @@ function Game:new()
     function game:update(dt)
         self.player:update(dt)
         self.bullets:update(dt)
+        if love.keyboard.isDown("space") then
+            self.bullets:add(self.player:shoot())
+        end
     end
 
     function game:escape()

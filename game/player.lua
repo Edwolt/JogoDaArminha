@@ -1,3 +1,8 @@
+Contents = Contents or {}
+Contents.Game = Contents.Game or {}
+Contents.Game.Bullet = Contents.Game.Bullet or require "game.bullet"
+local Bullet = Contents.Game.Bullet
+
 UTIL = UTIL or require "util"
 Modules = Modules or require "modules"
 local Vec = Modules.Vec
@@ -35,6 +40,10 @@ function Player:new()
     function player:update(dt)
         self.vel = self.vel + self.acc * dt
         self.pos = self.pos + self.vel * dt
+    end
+
+    function player:shoot()
+        return Bullet:new(self.weapon, self.pos, Vec:new(200, 0))
     end
 
     return player
