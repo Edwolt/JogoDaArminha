@@ -18,7 +18,7 @@ function love.update(dt)
 end
 
 function love.keypressed(key)
-    if key == "escape" then
+    if key == "escape" and content.escape then
         local change = content:escape()
         if change then
             content = Contents[change]:new()
