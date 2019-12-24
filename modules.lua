@@ -8,4 +8,6 @@ if Modules.Collider == nil or Modules.Colliders == nil then
     Modules.Colliders = aux.Colliders
 end
 
+Modules.Array = Modules.Array or require "modules.array"
+
 return Modules
