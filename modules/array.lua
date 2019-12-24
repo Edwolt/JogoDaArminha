@@ -7,8 +7,12 @@ function Array:new(class)
         class = class
     }
 
-    function array:add(...)
-        table.insert(self.vet, class:new(...))
+    function array:add(obj, ...)
+        if getmetatable(obj) == class then
+            table.insert(self.vet, obj)
+        else
+            table.insert(self.vet, class:new(obj, ...))
+        end
     end
 
     function array:draw()
