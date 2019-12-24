@@ -1,16 +1,20 @@
+UTIL = UTIL or require "util"
 Modules = Modules or require "modules"
 local Vec = Modules.Vec
 
 --* Player Class
-local Player = {}
+local Player = {
+    sprite = love.graphics.newImage("placeholder/player.png")
+}
+Player.sprite:setFilter("nearest", "nearest")
 Player.__index = Player
 
 function Player:new()
     local player = {
         weapon = 1,
-        pos = Vec:new(),
-        vel = Vec:new(),
-        acel = Vec:new()
+        pos = Vec:new(200, 0),
+        vel = Vec:new(0, 0),
+        acc = Vec:new(0, 450)
     }
     setmetatable(player, self)
 
@@ -25,11 +29,12 @@ function Player:new()
 
     function player:draw() -- TODO
         local realPos = self.pos * UTIL.game.scale
+        love.graphics.draw(Player.sprite, realPos.x, realPos.y, 0, UTIL.game.scale)
     end
 
     function player:update(dt)
-        self.vel = self.vel + (self.acel * dt)
-        self.pos = self.pos + (self.pos * dt)
+        self.vel = self.vel + (self.acc * dt)
+        self.pos = self.pos + (self.vel * dt)
     end
 
     return player

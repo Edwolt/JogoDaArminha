@@ -6,7 +6,7 @@ UTIL.window = {
 }
 
 UTIL.game = {}
-UTIL.game.height = 1000
+UTIL.game.height = 200
 UTIL.game.scale = UTIL.window.height / UTIL.game.height
 UTIL.game.width = UTIL.window.width / UTIL.game.scale
 

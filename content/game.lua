@@ -15,6 +15,7 @@ function Game:new()
     end
 
     function game:update(dt)
+        self.player:update(dt)
     end
 
     function game:escape()
