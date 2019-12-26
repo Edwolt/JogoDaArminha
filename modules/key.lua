@@ -2,27 +2,28 @@
 local Key = {}
 Key.__index = Key
 
-function Key:new(k, time)
+function Key:new(time, ...)
     local key = {
-        k = k,
+        k = {...},
         time = time,
         wait = 0
     }
+    setmetatable(key, self)
 
     function key:press()
         if self.wait <= 0 then
-            if type(self.k) == "table" and love.keyboard.isDown(self.k) then
-                self.wait = time
-                return true
-            elseif love.keyboard.isDown(self.k) then
-                self.wait = time
-                return true
+            for _, i in ipairs(self.k) do
+                if love.keyboard.isDown(unpack(self.k)) then
+                    self.wait = time
+                    return true
+                end
             end
         end
+        return false
     end
 
     function key:update(dt)
-        if select.wait > 0 then
+        if self.wait >= 0 then
             self.wait = self.wait - dt
         end
     end
