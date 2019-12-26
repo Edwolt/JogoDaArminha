@@ -1,6 +1,7 @@
 UTIL = UTIL or require "util"
 Modules = Modules or require "modules"
 local Vec = Modules.Vec
+local Collider = Modules.Collider
 
 Contents = Contents or {}
 Contents.Game = Contents.Game or {}
@@ -32,10 +33,9 @@ function Player:new(pos)
         end
     end
 
-    function player:draw() -- TODO
-        local real_center = self:center() * UTIL.game.scale
-
-        love.graphics.draw(Player.sprite, real_center.x, real_center.y, 0, UTIL.game.scale)
+    function player:draw(pos) -- TODO
+        local real_pos = pos / UTIL.game.scale
+        love.graphics.draw(Player.sprite, real_pos.x, real_pos.y, 0, UTIL.game.scale)
     end
 
     function player:center()
@@ -46,12 +46,34 @@ function Player:new(pos)
     end
 
     function player:update(dt)
-        self.vel = self.vel + self.acc * dt
         self.pos = self.pos + self.vel * dt
+        self.vel = self.vel + self.acc * dt
     end
 
     function player:shoot()
         return Bullet:new(self.weapon, self.pos, Vec:new(450, 0))
+    end
+
+    function player:stop()
+        self.vel = Vec:new(0, 0)
+    end
+
+    function player:getCollider()
+        local p2 = Vec:new(Player.sprite:getWidth(), Player.sprite:getHeight())
+        p2 = self.pos + p2
+        return Collider:new(self.pos, p2)
+    end
+
+    function player:drawCollider(pos)
+        love.graphics.setColor(0, 0, 255)
+        local col = self:getCollider()
+        local aux1 = col.p1 - pos
+        local aux2 = col.p2 - col.p1
+        aux1 = aux1 * UTIL.game.scale
+        aux2 = aux2 * UTIL.game.scale
+        love.graphics.rectangle("line", aux1.x, aux1.y, aux2.x, aux2.y)
+
+        love.graphics.setColor(255, 255, 255)
     end
 
     return player

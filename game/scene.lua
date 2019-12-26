@@ -79,16 +79,12 @@ function Scene:new(path)
                 local k = y * self.layer.width + x + 1
                 if self.layer.data[k] ~= 0 then
                     local i = self.layer.data[k] - 1
-
                     local tile_pos = Vec:new(i % self.tileset.columns, math.floor(i / self.tileset.columns))
-
                     local quad = newQuad(tile_pos, self.tileset)
-
                     self:_draw(Vec:new(x, y), quad, pos)
                 end
             end
         end
-        self:drawColliders(pos) -- TODO retirar
     end
 
     function scene:_draw(screen_pos, quad, pos)
@@ -112,16 +108,17 @@ function Scene:new(path)
         for _, i in ipairs(self.colliders.vet) do
             local aux1 = i.p1 - pos
             local aux2 = i.p2 - i.p1
-            aux1 = aux1*UTIL.game.scale
-            aux2 = aux2*UTIL.game.scale
+            aux1 = aux1 * UTIL.game.scale
+            aux2 = aux2 * UTIL.game.scale
             love.graphics.rectangle("line", aux1.x, aux1.y, aux2.x, aux2.y)
         end
+
         love.graphics.setColor(0, 255, 0)
         for _, i in ipairs(self.floor.vet) do
             local aux1 = i.p1 - pos
             local aux2 = i.p2 - i.p1
-            aux1 = aux1*UTIL.game.scale
-            aux2 = aux2*UTIL.game.scale
+            aux1 = aux1 * UTIL.game.scale
+            aux2 = aux2 * UTIL.game.scale
             love.graphics.rectangle("line", aux1.x, aux1.y, aux2.x, aux2.y)
         end
         love.graphics.setColor(255, 255, 255)

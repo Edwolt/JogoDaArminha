@@ -16,19 +16,29 @@ Game.__index = Game
 
 function Game:new()
     local game = {
-        player = Game.Player:new(Vec:new(32*30,32*10)),
+        player = Game.Player:new(Vec:new(32 * 30, 32 * 10)),
         bullets = Array:new(Game.Bullet),
         scene = Game.scene
     }
     setmetatable(game, self)
 
     function game:draw()
+        local player_pos = self.player:center()
+
         self.bullets:draw()
         self.scene:draw(self.player.pos - self.player:center())
-        self.player:draw()
+        self.player:draw(player_pos)
+
+        self.scene:drawColliders(self.player.pos - self.player:center())
+        self.player:drawCollider(player_pos)
     end
 
     function game:update(dt)
+        local col = self.scene.colliders:collision(self.player:getCollider())
+        if col then
+            print(col.p1, col.p2)
+            self.player:stop()
+        end
         self.player:update(dt)
         self.bullets:update(dt)
         if love.keyboard.isDown("space") then
