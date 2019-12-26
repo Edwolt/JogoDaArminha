@@ -22,9 +22,9 @@ function Game:new()
     setmetatable(game, self)
 
     function game:draw()
-        self.player:draw()
         self.bullets:draw()
-        self.scene:draw(self.player.pos)
+        self.scene:draw(self.player.pos - self.player:center())
+        self.player:draw()
     end
 
     function game:update(dt)

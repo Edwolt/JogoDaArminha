@@ -1,11 +1,11 @@
+UTIL = UTIL or require "util"
+Modules = Modules or require "modules"
+local Vec = Modules.Vec
+
 Contents = Contents or {}
 Contents.Game = Contents.Game or {}
 Contents.Game.Bullet = Contents.Game.Bullet or require "game.bullet"
 local Bullet = Contents.Game.Bullet
-
-UTIL = UTIL or require "util"
-Modules = Modules or require "modules"
-local Vec = Modules.Vec
 
 --* Player Class
 local Player = {
@@ -14,10 +14,10 @@ local Player = {
 Player.sprite:setFilter("nearest", "nearest")
 Player.__index = Player
 
-function Player:new()
+function Player:new(pos)
     local player = {
         weapon = 1,
-        pos = Vec:new(200, 0),
+        pos = pos or Vec:new(0, 0),
         vel = Vec:new(0, 0),
         acc = Vec:new(0, 450)
     }
@@ -33,8 +33,16 @@ function Player:new()
     end
 
     function player:draw() -- TODO
-        local real_pos = self.pos * UTIL.game.scale
-        love.graphics.draw(Player.sprite, real_pos.x, real_pos.y, 0, UTIL.game.scale)
+        local real_center = self:center() * UTIL.game.scale
+
+        love.graphics.draw(Player.sprite, real_center.x, real_center.y, 0, UTIL.game.scale)
+    end
+
+    function player:center()
+        local center = Vec:new(UTIL.game.width / 2, UTIL.game.height / 2)
+        center.x = center.x - Player.sprite:getWidth() / 2
+        center.y = center.y - Player.sprite:getHeight() / 2
+        return center
     end
 
     function player:update(dt)
