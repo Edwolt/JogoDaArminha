@@ -8,7 +8,7 @@ Bullet.__index = Bullet
 
 function Bullet:new(weapon, pos, vel)
     local bullet = {
-        type = weapon,
+        weapon = weapon,
         pos = pos or Vec:new(),
         vel = vel or Vec:new()
     }
@@ -16,15 +16,15 @@ function Bullet:new(weapon, pos, vel)
 
     function Bullet:draw()
         local real_pos = self.pos * UTIL.game.scale
-        
-        if self.type == 1 then
-        love.graphics.setColor(255,0,0)
-        elseif self.type == 2 then
-            love.graphics.setColor(0,0,255)
-        elseif self.type == 3 then
-            love.graphics.setColor(0,255,0)
+
+        if self.weapon == 1 then -- Fogo
+            love.graphics.setColor(255, 0, 0)
+        elseif self.weapon == 2 then -- Agua
+            love.graphics.setColor(0, 0, 255)
+        elseif self.weapon == 3 then -- Planta
+            love.graphics.setColor(0, 255, 0)
         else
-            love.graphics.setColor(255,255,255)
+            love.graphics.setColor(255, 255, 255)
         end
 
         love.graphics.rectangle("fill", real_pos.x, real_pos.y, 2 * UTIL.game.scale, 2 * UTIL.game.scale)
