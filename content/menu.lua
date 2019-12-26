@@ -1,5 +1,7 @@
 Fonts = Fonts or require "fonts"
 UTIL = UTIL or require "util"
+Modules = Modules or require "modules"
+local Key = Modules.Key
 
 --* Option Table
 local function newOption(text, class)
@@ -20,27 +22,30 @@ function Menu:new()
             newOption("Creditos", "Credits")
         },
         sel = 1,
-        wait = 0
+        key = {
+            down = Key:new(0.1, "s", "down"),
+            up = Key:new(0.1, "w", "up")
+        }
     }
     setmetatable(menu, self)
 
     function menu:update(dt)
+        for _, i in pairs(self.key) do
+            i:update(dt)
+        end
+
         if love.keyboard.isDown("return") then
             return self.options[self.sel].class
         end
 
-        if self.wait <= 0 then
-            if love.keyboard.isDown("s", "down") then
-                -- sel = sel < #options ? sel + 1 : #options
-                self.sel = self.sel < #self.options and self.sel + 1 or #self.options
-                self.wait = 0.1
-            elseif love.keyboard.isDown("w", "up") then
-                -- sel = sel > 1 ? sel - 1 : 1
-                self.sel = self.sel > 1 and self.sel - 1 or 1
-                self.wait = 0.1
-            end
+        if self.key.down:press() then
+            -- sel = sel < #options ? sel + 1 : #options
+            self.sel = self.sel < #self.options and self.sel + 1 or #self.options
         end
-        self.wait = self.wait - dt
+        if self.key.up:press() then
+            -- sel = sel > 1 ? sel - 1 : 1
+            self.sel = self.sel > 1 and self.sel - 1 or 1
+        end
     end
 
     function menu:draw()
