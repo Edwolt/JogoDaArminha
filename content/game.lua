@@ -1,6 +1,7 @@
 Modules = Modules or require "modules"
 local Array = Modules.Array
 local Vec = Modules.Vec
+local Key = Modules.Key
 
 --* Game Class
 Contents = Contents or {}
@@ -20,44 +21,43 @@ function Game:new()
         bullets = Array:new(Game.Bullet),
         scene = Game.scene,
         key = {
-            q = 0,
-            e = 0,
-            space = 0
+            q = Key:new(0.05, "q"),
+            e = Key:new(0.05, "e"),
+            space = Key:new(0.01, "space")
         }
     }
     setmetatable(game, self)
 
     function game:draw()
+        local player_pos = Vec:new(UTIL.game.width / 2, UTIL.game.height / 2)
+        local sprite_center = Vec:new(Game.Player.sprite:getWidth() / 2, Game.Player.sprite:getHeight() / 2)
+        player_pos = player_pos - 
+        self.scene:draw(Vec:new())
         self.bullets:draw()
-        self.scene:draw(self.player.pos)
-        self.player:draw(self.player.pos)
+        self.player:draw(player_pos)
     end
 
     function game:update(dt)
-        if love.keyboard.isDown("space") and self.key.space <= 0 then
+        for _, i in pairs(self.key) do
+            i:update(dt)
+        end
+
+        if self.key.space:press() then
             self.bullets:add(self.player:shoot())
         end
-        if love.keyboard.isDown("q") and self.key.q <= 0 then
+        if self.key.q:press() then
             self.player.weapon = self.player.weapon - 1
             if self.player.weapon < 1 then
                 self.player.weapon = 3
             end
-            self.key.q = 1
         end
-        if love.keyboard.isDown("e") and self.key.q <= 0 then
+        if self.key.e:press() then
             self.player.weapon = self.player.weapon + 1
-            if self.player.weapon <= 0 then
-                self.player.weapon = 3
-            end
-            self.key.e = 1
-        end
-        for k, i in pairs(self.key) do
-            if i > 0 then
-                self.key[k] = self.key[k] - dt
+            if self.player.weapon > 3 then
+                self.player.weapon = 0
             end
         end
-
-        self.player:update(dt)
+        local walk = self.player:update(dt)
         self.bullets:update(dt)
     end
 
