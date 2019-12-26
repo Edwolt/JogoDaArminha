@@ -18,7 +18,7 @@ function Collider:new(x1, y1, x2, y2)
         vec2 = Vec:new(x2, y2)
     end
 
-    -- Consertando vecs
+    -- fixing vecs
     if vec1.x > vec2.x then
         vec1.x, vec2.x = vec2.x, vec1.x
     end
@@ -46,40 +46,4 @@ function Collider:new(x1, y1, x2, y2)
     return collider
 end
 
---* Colliders Class
-local Colliders = {}
-Colliders.__index = Colliders
-
-function Colliders:new()
-    local colliders = {vet = {}}
-    setmetatable(colliders, self)
-
-    -- (Vec, Vec)
-    -- (int, int, int, int)
-    function colliders:add(x1, y1, x2, y2)
-        table.insert(self.vet, Collider:new(x1, y1, x2, y2))
-    end
-
-    function colliders:concat(other)
-        for _, i in ipairs(other.vet) do
-            table.insert(self.vet, i)
-        end
-    end
-
-    -- (Collider)
-    function colliders:collision(obj)
-        if getmetatable(obj) == Collider then
-            for _, i in pairs(self.vet) do
-                if i:collision(obj) then
-                    return i
-                end
-            end
-            return nil
-        end
-        return false
-    end
-
-    return colliders
-end
-
-return {Colliders = Colliders, Collider = Collider}
+return Collider
