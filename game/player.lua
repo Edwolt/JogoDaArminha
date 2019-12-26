@@ -17,21 +17,12 @@ Player.__index = Player
 
 function Player:new(pos, vel, acc)
     local player = {
-        weapon = 1,
+        weapon = 1, -- 1: Fogo; 2: Agua; 3: Planta
         pos = pos or Vec:new(),
         vel = vel or Vec:new(),
         acc = acc or Vec:new()
     }
     setmetatable(player, self)
-
-    function player:changeWeapon(weapon)
-        -- 1: Fogo
-        -- 2: Agua
-        -- 3: Planta
-        if 1 <= weapon and weapon <= 3 then
-            player.weapon = weapon
-        end
-    end
 
     function player:draw(pos) -- TODO
         local real_pos = pos / UTIL.game.scale
