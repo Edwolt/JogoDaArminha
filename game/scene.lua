@@ -46,16 +46,17 @@ function Scene:new(path)
             local k = y * layer.width + x + 1
             if layer.data[k] == 0 then
                 -- Air: Do nothing
-            elseif 1 <= layer.data[k] or layer.data[k] <= 3 then
+            elseif 1 <= layer.data[k] and layer.data[k] <= 3 then
                 -- Grass/Water
-                -- TODO create floor
                 local x1 = x * tilemap.tilewidth
                 local y1 = y * tilemap.tileheight
                 local x2 = (x + 1) * tilemap.tilewidth
                 local y2 = (y + 1) * tilemap.tileheight
                 colliders:add(x1, y1, x2, y2)
+                floor:add(x1 + 3, y1, x2 - 3, y1 + 2)
             elseif layer.data[k] == 4 then
                 -- Dirt
+                print(k)
                 local x1 = x * tilemap.tilewidth
                 local y1 = y * tilemap.tileheight
                 local x2 = (x + 1) * tilemap.tilewidth
@@ -74,10 +75,10 @@ function Scene:new(path)
     setmetatable(scene, self)
 
     function scene:draw(pos)
+        self:drawColliders() -- TODO retirar
         for y = 0, self.layer.height - 1 do
             for x = 0, self.layer.width - 1 do
                 local k = y * self.layer.width + x + 1
-                print(k)
                 if self.layer.data[k] ~= 0 then
                     local i = self.layer.data[k] - 1
 
@@ -105,6 +106,20 @@ function Scene:new(path)
             UTIL.game.scale,
             UTIL.game.scale
         )
+    end
+
+    function scene:drawColliders()
+        love.graphics.setColor(255, 0, 0)
+        for _, i in ipairs(self.colliders.vet) do
+            local aux = i.p2 - i.p1
+            love.graphics.rectangle("line", i.p1.x, i.p1.y, aux.x, aux.y)
+        end
+        love.graphics.setColor(0, 255, 0)
+        for _, i in ipairs(self.floor.vet) do
+            local aux = i.p2 - i.p1
+            love.graphics.rectangle("line", i.p1.x, i.p1.y, aux.x, aux.y)
+        end
+        love.graphics.setColor(255,255,255)
     end
 
     return scene
