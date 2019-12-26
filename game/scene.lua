@@ -56,7 +56,6 @@ function Scene:new(path)
                 floor:add(x1 + 3, y1, x2 - 3, y1 + 2)
             elseif layer.data[k] == 4 then
                 -- Dirt
-                print(k)
                 local x1 = x * tilemap.tilewidth
                 local y1 = y * tilemap.tileheight
                 local x2 = (x + 1) * tilemap.tilewidth
@@ -75,7 +74,6 @@ function Scene:new(path)
     setmetatable(scene, self)
 
     function scene:draw(pos)
-        self:drawColliders() -- TODO retirar
         for y = 0, self.layer.height - 1 do
             for x = 0, self.layer.width - 1 do
                 local k = y * self.layer.width + x + 1
@@ -90,6 +88,7 @@ function Scene:new(path)
                 end
             end
         end
+        self:drawColliders(pos) -- TODO retirar
     end
 
     function scene:_draw(screen_pos, quad, pos)
@@ -108,18 +107,24 @@ function Scene:new(path)
         )
     end
 
-    function scene:drawColliders()
+    function scene:drawColliders(pos)
         love.graphics.setColor(255, 0, 0)
         for _, i in ipairs(self.colliders.vet) do
-            local aux = i.p2 - i.p1
-            love.graphics.rectangle("line", i.p1.x, i.p1.y, aux.x, aux.y)
+            local aux1 = i.p1 - pos
+            local aux2 = i.p2 - i.p1
+            aux1 = aux1*UTIL.game.scale
+            aux2 = aux2*UTIL.game.scale
+            love.graphics.rectangle("line", aux1.x, aux1.y, aux2.x, aux2.y)
         end
         love.graphics.setColor(0, 255, 0)
         for _, i in ipairs(self.floor.vet) do
-            local aux = i.p2 - i.p1
-            love.graphics.rectangle("line", i.p1.x, i.p1.y, aux.x, aux.y)
+            local aux1 = i.p1 - pos
+            local aux2 = i.p2 - i.p1
+            aux1 = aux1*UTIL.game.scale
+            aux2 = aux2*UTIL.game.scale
+            love.graphics.rectangle("line", aux1.x, aux1.y, aux2.x, aux2.y)
         end
-        love.graphics.setColor(255,255,255)
+        love.graphics.setColor(255, 255, 255)
     end
 
     return scene
