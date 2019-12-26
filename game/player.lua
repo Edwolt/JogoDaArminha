@@ -33,8 +33,8 @@ function Player:new()
     end
 
     function player:draw() -- TODO
-        local realPos = self.pos * UTIL.game.scale
-        love.graphics.draw(Player.sprite, realPos.x, realPos.y, 0, UTIL.game.scale)
+        local real_pos = self.pos * UTIL.game.scale
+        love.graphics.draw(Player.sprite, real_pos.x, real_pos.y, 0, UTIL.game.scale)
     end
 
     function player:update(dt)

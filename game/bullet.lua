@@ -15,7 +15,7 @@ function Bullet:new(weapon, pos, vel)
     setmetatable(bullet, self)
 
     function Bullet:draw()
-        local realPos = self.pos * UTIL.game.scale
+        local real_pos = self.pos * UTIL.game.scale
         
         if self.type == 1 then
         love.graphics.setColor(255,0,0)
@@ -27,7 +27,7 @@ function Bullet:new(weapon, pos, vel)
             love.graphics.setColor(255,255,255)
         end
 
-        love.graphics.rectangle("fill", realPos.x, realPos.y, 2 * UTIL.game.scale, 2 * UTIL.game.scale)
+        love.graphics.rectangle("fill", real_pos.x, real_pos.y, 2 * UTIL.game.scale, 2 * UTIL.game.scale)
     end
 
     function Bullet:update(dt)
