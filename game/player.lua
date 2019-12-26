@@ -15,12 +15,12 @@ local Player = {
 Player.sprite:setFilter("nearest", "nearest")
 Player.__index = Player
 
-function Player:new(pos)
+function Player:new(pos, vel, acc)
     local player = {
         weapon = 1,
-        pos = pos or Vec:new(0, 0),
-        vel = Vec:new(0, 0),
-        acc = Vec:new(0, 450)
+        pos = pos or Vec:new(),
+        vel = vel or Vec:new(),
+        acc = acc or Vec:new()
     }
     setmetatable(player, self)
 
@@ -54,26 +54,14 @@ function Player:new(pos)
         return Bullet:new(self.weapon, self.pos, Vec:new(450, 0))
     end
 
-    function player:stop()
-        self.vel = Vec:new(0, 0)
+    function player:walk(dir)
+        player.vel = dir*Player.WALK
     end
 
     function player:getCollider()
         local p2 = Vec:new(Player.sprite:getWidth(), Player.sprite:getHeight())
         p2 = self.pos + p2
         return Collider:new(self.pos, p2)
-    end
-
-    function player:drawCollider(pos)
-        love.graphics.setColor(0, 0, 255)
-        local col = self:getCollider()
-        local aux1 = col.p1 - pos
-        local aux2 = col.p2 - col.p1
-        aux1 = aux1 * UTIL.game.scale
-        aux2 = aux2 * UTIL.game.scale
-        love.graphics.rectangle("line", aux1.x, aux1.y, aux2.x, aux2.y)
-
-        love.graphics.setColor(255, 255, 255)
     end
 
     return player

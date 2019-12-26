@@ -16,7 +16,7 @@ Game.__index = Game
 
 function Game:new()
     local game = {
-        player = Game.Player:new(Vec:new(32 * 30, 32 * 10)),
+        player = Game.Player:new(Vec:new(32 * 30, 32 * 10), nil, Vec:new(0, UTIL.values.gravity)),
         bullets = Array:new(Game.Bullet),
         scene = Game.scene
     }
