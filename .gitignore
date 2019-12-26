@@ -1,5 +1,6 @@
 .vscode/*
 placeholder/*
+tilemap/*
 
 # Compiled Lua sources
 luac.out
