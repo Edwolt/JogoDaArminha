@@ -43,7 +43,7 @@ function Player:new()
     end
 
     function player:shoot()
-        return Bullet:new(self.weapon, self.pos, Vec:new(200, 0))
+        return Bullet:new(self.weapon, self.pos, Vec:new(450, 0))
     end
 
     return player
