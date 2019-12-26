@@ -10,7 +10,8 @@ local Bullet = Contents.Game.Bullet
 
 --* Player Class
 local Player = {
-    sprite = love.graphics.newImage("placeholder/player.png")
+    sprite = love.graphics.newImage("placeholder/player.png"),
+    WALK = 200
 }
 Player.sprite:setFilter("nearest", "nearest")
 Player.__index = Player
@@ -20,12 +21,13 @@ function Player:new(pos, vel, acc)
         weapon = 1, -- 1: Fogo; 2: Agua; 3: Planta
         pos = pos or Vec:new(),
         vel = vel or Vec:new(),
-        acc = acc or Vec:new()
+        acc = acc or Vec:new(),
+        shoot_vel = 450
     }
     setmetatable(player, self)
 
     function player:draw(pos) -- TODO
-        local real_pos = pos / UTIL.game.scale
+        local real_pos = pos * UTIL.game.scale
         love.graphics.draw(Player.sprite, real_pos.x, real_pos.y, 0, UTIL.game.scale)
     end
 
@@ -42,11 +44,11 @@ function Player:new(pos, vel, acc)
     end
 
     function player:shoot()
-        return Bullet:new(self.weapon, self.pos, Vec:new(450, 0))
+        return Bullet:new(self.weapon, Vec:new(50, 50), Vec:new(self.shoot_vel, 0))
     end
 
     function player:walk(dir)
-        player.vel = dir*Player.WALK
+        player.vel = dir * Player.WALK
     end
 
     function player:getCollider()
