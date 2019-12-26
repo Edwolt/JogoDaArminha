@@ -3,6 +3,17 @@ Modules = Modules or require "modules"
 local Colliders = Modules.Colliders
 local Vec = Modules.Vec
 
+local function newQuad(tile_pos, tileset)
+    return love.graphics.newQuad(
+        tile_pos.x * tileset.twidth,
+        tile_pos.y * tileset.theight,
+        tileset.twidth,
+        tileset.theight,
+        tileset.iwidth,
+        tileset.iheight
+    )
+end
+
 --* Scene Class
 local Scene = {}
 Scene.__index = Scene
@@ -69,12 +80,30 @@ function Scene:new(path)
                 if self.data[k] ~= 0 then
                     local i = self.data[k] - 1
 
-                    local image_pos = Vec:new(i % self.tileset.columns, math.floor(i / self.columns))
+                    local tile_pos = Vec:new(i % self.tileset.columns, math.floor(i / self.columns))
 
-                    local quad = love.graphics.newQuad()
+                    local quad = newQuad(tile_pos, self.tileset)
+
+                    self:_draw(Vec:new(x, y), quad, pos)
                 end
             end
         end
+    end
+
+    function scene:_draw(screen_pos, quad, pos)
+        local real_pos = pos * UTIL.game.scale
+        local x = screen_pos.x * self.tileset.twidth
+        local y = screen_pos.y * self.tileset.theight
+
+        love.graphics.draw(
+            self.sheet,
+            quad,
+            x * UTIL.game.scale - real_pos.x,
+            y * UTIL.game.scale - real_pos.y,
+            0,
+            UTIL.game.scale,
+            UTIL.game.scale
+        )
     end
 
     return scene
