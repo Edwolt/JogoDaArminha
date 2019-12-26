@@ -7,19 +7,24 @@ Contents.Game = Contents.Game or {}
 local Game = Contents.Game
 Game.Player = Game.Player or require "game.player"
 Game.Bullet = Game.Bullet or require "game.bullet"
+Game.Scene = Game.Scene or require "game.scene"
+
+Game.scene = Game.Scene:new("level")
 
 Game.__index = Game
 
 function Game:new()
     local game = {
         player = Game.Player:new(),
-        bullets = Array:new(Game.Bullet)
+        bullets = Array:new(Game.Bullet),
+        scene = Game.scene
     }
     setmetatable(game, self)
 
     function game:draw()
         self.player:draw()
         self.bullets:draw()
+        self.scene:draw(self.player.pos)
     end
 
     function game:update(dt)
