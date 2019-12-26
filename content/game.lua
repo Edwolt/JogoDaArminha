@@ -1,5 +1,6 @@
 Modules = Modules or require "modules"
 local Array = Modules.Array
+local Vec = Modules.Vec
 
 --* Game Class
 Contents = Contents or {}
@@ -15,7 +16,7 @@ Game.__index = Game
 
 function Game:new()
     local game = {
-        player = Game.Player:new(),
+        player = Game.Player:new(Vec:new(32*30,32*10)),
         bullets = Array:new(Game.Bullet),
         scene = Game.scene
     }
