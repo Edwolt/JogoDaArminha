@@ -46,10 +46,19 @@ function Block:new(pos, value)
     end
 
     function block:getCollider()
-        return nil
+        local p2 = Vec:new(Block.width, Block.height)
+        p2 = p2 + self.pos
+        return Collider:new(self.pos, p2)
     end
 
     function block:getFloor()
+        if self.value == 2 then
+            local x1 = self.pos.x + 3
+            local y1 = self.pos.y
+            local x2 = self.pos.x + Block.width - 3
+            local y2 = self.pos.y + 2
+            return Collider:new(x1, y1, x2, y2)
+        end
         return nil
     end
 
