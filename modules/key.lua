@@ -11,7 +11,10 @@ function Key:new(k, time)
 
     function key:press()
         if self.wait <= 0 then
-            if love.keyboard.isDown(self.k) then
+            if type(self.k) == "table" and love.keyboard.isDown(self.k) then
+                self.wait = time
+                return true
+            elseif love.keyboard.isDown(self.k) then
                 self.wait = time
                 return true
             end
