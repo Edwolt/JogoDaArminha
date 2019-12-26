@@ -21,8 +21,23 @@ function Scene:new(path)
     for x = 0, layer.height - 1 do
         for y = 0, layer.width - 1 do
             local k = y * self.width + x + 1
-            if layer.data[k] == 0 then --TODO
-            elseif layer.data[k] == 0 then
+            if layer.data[k] == 0 then
+                -- Air: Do nothing
+            elseif 1 <= layer.data[k] or layer.data[k] <= 3 then
+                -- Grass/Water
+                local x1 = x * tilemap.tilewidth
+                local y1 = y * tilemap.tileheight
+                local x2 = (x + 1) * tilemap.tilewidth
+                local y2 = (y + 1) * tilemap.tileheight
+                colliders:add(x1, y1, x2, y2)
+                -- TODO create floor
+            elseif layer.data[k] == 4 then
+                -- Dirt
+                local x1 = x * tilemap.tilewidth
+                local y1 = y * tilemap.tileheight
+                local x2 = (x + 1) * tilemap.tilewidth
+                local y2 = (y + 1) * tilemap.tileheight
+                colliders:add(x1, y1, x2, y2)
             end
         end
     end
@@ -30,8 +45,10 @@ function Scene:new(path)
     local scene = {
         sheet = sheet,
         layer = layer,
+        floor = floor,
         colliders = colliders
     }
+    setmetatable(scene, self)
 
     return scene
 end
