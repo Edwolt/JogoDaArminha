@@ -72,6 +72,10 @@ function Game:new()
         end
         self.player:walk(walk)
 
+        self.scene:update(dt)
+        self.player:update(dt)
+        self.bullets:update(dt)
+
         local col = self.scene:wallCollision(self.player:getCollider())
         if col then
             local pcol = self.player:getCollider()
@@ -98,11 +102,8 @@ function Game:new()
             end
             self.player.pos = self.player.pos + min
             self.player.vel[zerar] = 0
+            self:update(0)
         end
-
-        self.scene:update(dt)
-        self.player:update(dt)
-        self.bullets:update(dt)
     end
 
     function game:escape()
