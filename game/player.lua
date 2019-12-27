@@ -11,7 +11,8 @@ local Bullet = Contents.Game.Bullet
 --* Player Class
 local Player = {
     sprite = love.graphics.newImage("placeholder/player.png"),
-    WALK = 200
+    WALK = 200,
+    JUMP = 530
 }
 Player.sprite:setFilter("nearest", "nearest")
 Player.__index = Player
@@ -23,7 +24,8 @@ function Player:new(pos, vel, acc)
         vel = vel or Vec:new(),
         acc = acc or Vec:new(),
         shoot_vel = 450,
-        dir = 1
+        dir = 1,
+        onJump = false
     }
     setmetatable(player, self)
 
@@ -40,8 +42,8 @@ function Player:new(pos, vel, acc)
     end
 
     function player:update(dt)
-        self.pos = self.pos + self.vel * dt
         self.vel = self.vel + self.acc * dt
+        self.pos = self.pos + self.vel * dt
     end
 
     function player:shoot()
@@ -54,8 +56,21 @@ function Player:new(pos, vel, acc)
 
     function player:walk(dir)
         self.vel.x = dir * Player.WALK
+
         -- self.dir = dir ~= 0 ? dir : self.dir
         self.dir = dir ~= 0 and dir or self.dir
+    end
+
+    function player:jump()
+        self.vel.y = -Player.JUMP
+        self.onJump = true
+    end
+
+    function player:stopJump()
+        if self.onJump then
+            self.vel.y = self.vel.y / 2
+            self.onJump = false
+        end
     end
 
     function player:getCollider()

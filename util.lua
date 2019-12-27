@@ -11,7 +11,7 @@ UTIL.game.scale = UTIL.window.height / UTIL.game.height
 UTIL.game.width = UTIL.window.width / UTIL.game.scale
 
 UTIL.values = {
-    gravity = 450
+    gravity = 1000
 }
 
 --* Wrapper Function para love.graphic.printf

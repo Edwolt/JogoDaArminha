@@ -23,7 +23,7 @@ function Game:new()
         key = {
             q = Key:new(0.05, "q"),
             e = Key:new(0.05, "e"),
-            space = Key:new(0.01, "space")
+            space = Key:new(0.05, "space")
         }
     }
     setmetatable(game, self)
@@ -72,7 +72,18 @@ function Game:new()
         self.player:update(dt)
         self.bullets:update(dt)
 
-        local _, col = self.scene:wallCollision(self.player:getCollider())
+        local _, col = self.scene:floorCollision(self.player:getCollider())
+        if col then
+            if love.keyboard.isDown("w", "up") then
+                self.player:jump()
+            end
+        else
+            if not love.keyboard.isDown("w", "up") then
+                self.player:stopJump()
+            end
+        end
+
+        _, col = self.scene:wallCollision(self.player:getCollider())
         while col do
             if col then
                 self:collisionResolve(self.player, col)
@@ -95,21 +106,28 @@ function Game:new()
         local vec4 = Vec:new(0, aux2.y)
 
         local min = vec1
-        local zerar = "x"
+        local vnum = 1
         if vec2:norm() < min:norm() then
             min = vec2
-            zerar = "y"
+            vnum = 2
         end
         if vec3:norm() < min:norm() then
             min = vec3
-            zerar = "x"
+            vnum = 3
         end
         if vec4:norm() < min:norm() then
             min = vec4
-            zerar = "y"
+            vnum = 4
         end
         obj.pos = obj.pos + min
-        obj.vel[zerar] = 0
+
+        if vnum == 1 or vnum == 3 then
+            obj.vel.x = 0
+        elseif vnum == 4 and  obj.vel.y <= 0 then
+            obj.vel.y = 0
+        elseif vnum == 2 and obj.vel.y >= 0 then
+            obj.vel.y = 0
+        end
     end
 
     function game:escape()
