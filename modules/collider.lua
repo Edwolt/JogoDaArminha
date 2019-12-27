@@ -33,15 +33,10 @@ function Collider:new(x1, y1, x2, y2)
     setmetatable(collider, self)
 
     function collider:collision(other)
-        if
-            self.p1.x < other.p2.x and --
-                self.p2.x > other.p1.x and
-                self.p1.y < other.p2.y and
-                self.p2.y > self.p1.y
-         then
-            return true
-        end
-        return false
+        return self.p1.x < other.p2.x and --
+            self.p2.x > other.p1.x and
+            self.p1.y < other.p2.y and
+            self.p2.y > other.p1.y
     end
 
     function collider:draw(scale, r, g, b) --! Apenas para debug
