@@ -17,7 +17,7 @@ Game.__index = Game
 
 function Game:new()
     local game = {
-        player = Game.Player:new(Vec:new(32 * 30, 32 * 10), nil, Vec:new(0, UTIL.values.gravity)),
+        player = Game.Player:new(Vec:new(65, 65), nil, Vec:new(0, UTIL.values.gravity)),
         bullets = Array:new(Game.Bullet),
         scene = Game.scene,
         key = {
@@ -31,10 +31,10 @@ function Game:new()
     function game:draw()
         local player_pos = Vec:new(UTIL.game.width / 2, UTIL.game.height / 2)
         local sprite_center = Vec:new(Game.Player.sprite:getWidth() / 2, Game.Player.sprite:getHeight() / 2)
-        player_pos = player_pos - 
+        player_pos = player_pos
         self.scene:draw(Vec:new())
         self.bullets:draw()
-        self.player:draw(player_pos)
+        self.player:draw(self.player.pos)
     end
 
     function game:update(dt)
