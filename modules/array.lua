@@ -6,6 +6,7 @@ function Array:new(class)
         vet = {},
         class = class
     }
+    setmetatable(array, self)
 
     function array:add(obj, ...)
         if getmetatable(obj) == class then
@@ -13,6 +14,10 @@ function Array:new(class)
         else
             table.insert(self.vet, class:new(obj, ...))
         end
+    end
+
+    function array:remove(k)
+        table.remove(self.vet, k)
     end
 
     function array:draw(...)
