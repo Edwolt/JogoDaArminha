@@ -92,12 +92,12 @@ function Game:new()
         end
     end
 
-    function game:collisionResolve(obj, col)
+    function game:collisionResolve(player, col)
         if col == nil then
             return
         end
 
-        local pcol = obj:getCollider()
+        local pcol = player:getCollider()
         local aux1 = col.p1 - pcol.p2
         local aux2 = col.p2 - pcol.p1
         local vec1 = Vec:new(aux1.x, 0)
@@ -119,14 +119,14 @@ function Game:new()
             min = vec4
             vnum = 4
         end
-        obj.pos = obj.pos + min
+        player.pos = player.pos + min
 
         if vnum == 1 or vnum == 3 then
-            obj.vel.x = 0
-        elseif vnum == 4 and  obj.vel.y <= 0 then
-            obj.vel.y = 0
-        elseif vnum == 2 and obj.vel.y >= 0 then
-            obj.vel.y = 0
+            player.vel.x = 0
+        elseif vnum == 4 and  player.vel.y <= 0 then
+            player.vel.y = 0
+        elseif vnum == 2 and player.vel.y >= 0 then
+            player.vel.y = 0
         end
     end
 
