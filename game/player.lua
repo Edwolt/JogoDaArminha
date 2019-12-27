@@ -11,7 +11,7 @@ local Bullet = Contents.Game.Bullet
 --* Player Class
 local Player = {
     sprite = love.graphics.newImage("placeholder/player.png"),
-    WALK = 200
+    WALK = 100
 }
 Player.sprite:setFilter("nearest", "nearest")
 Player.__index = Player
@@ -50,7 +50,7 @@ function Player:new(pos, vel, acc)
     end
 
     function player:walk(dir)
-        self.vel.x = self.vel.x + dir * Player.WALK
+        self.vel.x = dir * Player.WALK
     end
 
     function player:getCollider()

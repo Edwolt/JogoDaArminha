@@ -71,11 +71,33 @@ function Game:new()
             walk = walk + 1
         end
         self.player:walk(walk)
-        
 
         local col = self.scene:wallCollision(self.player:getCollider())
         if col then
-            self.player.vel = Vec:new()
+            local pcol = self.player:getCollider()
+            local aux1 = col.p1 - pcol.p2
+            local aux2 = col.p2 - pcol.p1
+            local vec1 = Vec:new(aux1.x, 0)
+            local vec2 = Vec:new(0, aux1.y)
+            local vec3 = Vec:new(aux2.x, 0)
+            local vec4 = Vec:new(0, aux2.y)
+
+            local min = vec1
+            local zerar = "x"
+            if vec2:norm() < min:norm() then
+                min = vec2
+                zerar = "y"
+            end
+            if vec3:norm() < min:norm() then
+                min = vec3
+                zerar = "x"
+            end
+            if vec4:norm() < min:norm() then
+                min = vec4
+                zerar = "y"
+            end
+            self.player.pos = self.player.pos + min
+            self.player.vel[zerar] = 0
         end
 
         self.scene:update(dt)
