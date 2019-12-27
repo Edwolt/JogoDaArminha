@@ -108,17 +108,19 @@ function Scene:new(path)
         end
     end
 
-    function scene:wallCollision(col)
+    function scene:wallCollision(that)
         for _, i in ipairs(self.blocks) do
-            if i:getWall():collision(col) then
+            local this = i:getWall()
+            if this and this:collision(that) then
                 return i
             end
         end
     end
-
-    function scene:floorCollision(col)
+    
+    function scene:floorCollision(that)
         for _, i in ipairs(self.blocks) do
-            if i:getFloor():collision(col) then
+            local this = i:getFloor()
+            if this and this:collision(that) then
                 return i
             end
         end
