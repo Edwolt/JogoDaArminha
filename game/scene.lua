@@ -97,6 +97,16 @@ function Scene:new(path)
     function scene:draw(pos)
         for _, i in ipairs(self.blocks) do
             i:draw(pos)
+            local col = i:getWall() --! Apenas para debug
+            if col then
+                col:draw(UTIL.game.scale, 255, 0, 0)
+            end
+            col = i:getFloor() --! Apenas pra debug
+            if col then
+                col:draw(UTIL.game.scale, 0, 255, 0)
+            end
+        end
+    end
 
     function scene:wallCollision(col)
         for _, i in ipairs(self.blocks) do

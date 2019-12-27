@@ -26,9 +26,11 @@ function Player:new(pos, vel, acc)
     }
     setmetatable(player, self)
 
-    function player:draw(pos) -- TODO
+    function player:draw(pos)
         local real_pos = pos * UTIL.game.scale
         love.graphics.draw(Player.sprite, real_pos.x, real_pos.y, 0, UTIL.game.scale)
+
+        self:getCollider():draw(UTIL.game.scale, 0, 0, 255) --! Apenas para debug
     end
 
     function player:center()
@@ -44,7 +46,7 @@ function Player:new(pos, vel, acc)
     end
 
     function player:shoot()
-        return Bullet:new(self.weapon, Vec:new(50, 50), Vec:new(self.shoot_vel, 0))
+        return Bullet:new(self.weapon, self.pos, Vec:new(self.shoot_vel, 0))
     end
 
     function player:walk(dir)
