@@ -35,6 +35,11 @@ function Game:new()
         self.scene:draw(Vec:new())
         self.bullets:draw()
         self.player:draw(self.player.pos)
+
+        local col = self.scene:wallCollision(self.player:getCollider())
+        if col then
+            col:draw(UTIL.game.scale, 0, 255, 255)
+        end
     end
 
     function game:update(dt)
@@ -56,6 +61,21 @@ function Game:new()
             if self.player.weapon > 3 then
                 self.player.weapon = 0
             end
+        end
+
+        local walk = 0
+        if love.keyboard.isDown("a", "left") then
+            walk = walk - 1
+        end
+        if love.keyboard.isDown("d", "right") then
+            walk = walk + 1
+        end
+        self.player:walk(walk)
+        
+
+        local col = self.scene:wallCollision(self.player:getCollider())
+        if col then
+            self.player.vel = Vec:new()
         end
 
         self.scene:update(dt)

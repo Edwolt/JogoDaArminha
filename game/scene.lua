@@ -118,7 +118,7 @@ function Scene:new(path)
         for _, i in ipairs(self.blocks) do
             local this = i:getWall()
             if this and this:collision(that) then
-                return i
+                return this --! Voltar para i
             end
         end
     end
@@ -127,7 +127,7 @@ function Scene:new(path)
         for _, i in ipairs(self.blocks) do
             local this = i:getFloor()
             if this and this:collision(that) then
-                return i
+                return this --! Voltar para i
             end
         end
     end

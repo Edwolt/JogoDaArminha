@@ -50,7 +50,7 @@ function Player:new(pos, vel, acc)
     end
 
     function player:walk(dir)
-        player.vel = dir * Player.WALK
+        self.vel.x = self.vel.x + dir * Player.WALK
     end
 
     function player:getCollider()
