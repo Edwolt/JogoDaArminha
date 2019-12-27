@@ -57,7 +57,9 @@ function Game:new()
                 self.player.weapon = 0
             end
         end
-        local walk = self.player:update(dt)
+
+        self.scene:update(dt)
+        self.player:update(dt)
         self.bullets:update(dt)
     end
 

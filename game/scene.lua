@@ -108,6 +108,12 @@ function Scene:new(path)
         end
     end
 
+    function scene:update(dt)
+        for _, i in ipairs(self.blocks) do
+            i:update(dt)
+        end
+    end
+
     function scene:wallCollision(that)
         for _, i in ipairs(self.blocks) do
             local this = i:getWall()
