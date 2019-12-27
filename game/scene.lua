@@ -45,7 +45,7 @@ function Block:new(pos, value)
         end
     end
 
-    function block:getCollider()
+    function block:getWall()
         local p2 = Vec:new(Block.width, Block.height)
         p2 = p2 + self.pos
         return Collider:new(self.pos, p2)
@@ -97,6 +97,20 @@ function Scene:new(path)
     function scene:draw(pos)
         for _, i in ipairs(self.blocks) do
             i:draw(pos)
+
+    function scene:wallCollision(col)
+        for _, i in ipairs(self.blocks) do
+            if i:getWall():collision(col) then
+                return i
+            end
+        end
+    end
+
+    function scene:floorCollision(col)
+        for _, i in ipairs(self.blocks) do
+            if i:getFloor():collision(col) then
+                return i
+            end
         end
     end
 
