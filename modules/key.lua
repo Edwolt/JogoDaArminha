@@ -12,11 +12,9 @@ function Key:new(time, ...)
 
     function key:press()
         if self.wait <= 0 then
-            for _, i in ipairs(self.k) do
-                if love.keyboard.isDown(unpack(self.k)) then
-                    self.wait = time
-                    return true
-                end
+            if love.keyboard.isDown(unpack(self.k)) then
+                self.wait = time
+                return true
             end
         end
         return false
