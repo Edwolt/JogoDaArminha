@@ -93,7 +93,6 @@ function Scene:new(path)
         end
     end
 
-
     function scene:draw(pos)
         for _, i in ipairs(self.blocks) do
             i:draw(pos)
@@ -110,16 +109,16 @@ function Scene:new(path)
         for _, i in ipairs(self.blocks) do
             local this = i:getWall()
             if this and this:collision(that) then
-                return this
+                return i, this
             end
         end
     end
-    
+
     function scene:floorCollision(that)
         for _, i in ipairs(self.blocks) do
             local this = i:getFloor()
             if this and this:collision(that) then
-                return this
+                return i, this
             end
         end
     end

@@ -32,8 +32,9 @@ function Game:new()
         local player_pos = Vec:new(UTIL.game.width / 2, UTIL.game.height / 2)
         local sprite_center = Vec:new(Game.Player.sprite:getWidth() / 2, Game.Player.sprite:getHeight() / 2)
         player_pos = player_pos - sprite_center
-        self.scene:draw(self.player.pos - player_pos)
-        self.bullets:draw()
+        local scene_pos = self.player.pos - player_pos
+        self.scene:draw(scene_pos)
+        self.bullets:draw(scene_pos)
         self.player:draw(player_pos)
     end
 
@@ -71,33 +72,35 @@ function Game:new()
         self.player:update(dt)
         self.bullets:update(dt)
 
-        local col = self.scene:wallCollision(self.player:getCollider())
-        if col then
-            local pcol = self.player:getCollider()
-            local aux1 = col.p1 - pcol.p2
-            local aux2 = col.p2 - pcol.p1
-            local vec1 = Vec:new(aux1.x, 0)
-            local vec2 = Vec:new(0, aux1.y)
-            local vec3 = Vec:new(aux2.x, 0)
-            local vec4 = Vec:new(0, aux2.y)
+        local _, col = self.scene:wallCollision(self.player:getCollider())
+        while col do
+            if col then
+                local pcol = self.player:getCollider()
+                local aux1 = col.p1 - pcol.p2
+                local aux2 = col.p2 - pcol.p1
+                local vec1 = Vec:new(aux1.x, 0)
+                local vec2 = Vec:new(0, aux1.y)
+                local vec3 = Vec:new(aux2.x, 0)
+                local vec4 = Vec:new(0, aux2.y)
 
-            local min = vec1
-            local zerar = "x"
-            if vec2:norm() < min:norm() then
-                min = vec2
-                zerar = "y"
+                local min = vec1
+                local zerar = "x"
+                if vec2:norm() < min:norm() then
+                    min = vec2
+                    zerar = "y"
+                end
+                if vec3:norm() < min:norm() then
+                    min = vec3
+                    zerar = "x"
+                end
+                if vec4:norm() < min:norm() then
+                    min = vec4
+                    zerar = "y"
+                end
+                self.player.pos = self.player.pos + min
+                self.player.vel[zerar] = 0
+                _, col = self.scene:wallCollision(self.player:getCollider())
             end
-            if vec3:norm() < min:norm() then
-                min = vec3
-                zerar = "x"
-            end
-            if vec4:norm() < min:norm() then
-                min = vec4
-                zerar = "y"
-            end
-            self.player.pos = self.player.pos + min
-            self.player.vel[zerar] = 0
-            self:update(0)
         end
     end
 

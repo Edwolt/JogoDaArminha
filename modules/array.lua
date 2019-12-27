@@ -15,15 +15,15 @@ function Array:new(class)
         end
     end
 
-    function array:draw()
+    function array:draw(...)
         for _, i in ipairs(self.vet) do
-            i:draw()
+            i:draw(...)
         end
     end
 
-    function array:update(dt)
+    function array:update(dt, ...)
         for _, i in ipairs(self.vet) do
-            i:update(dt)
+            i:update(dt, ...)
         end
     end
 

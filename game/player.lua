@@ -22,20 +22,21 @@ function Player:new(pos, vel, acc)
         pos = pos or Vec:new(),
         vel = vel or Vec:new(),
         acc = acc or Vec:new(),
-        shoot_vel = 450
+        shoot_vel = 450,
+        dir = 1
     }
     setmetatable(player, self)
 
     function player:draw(pos)
-        local real_pos = pos * UTIL.game.scale
-        love.graphics.draw(Player.sprite, real_pos.x, real_pos.y, 0, UTIL.game.scale)
-    end
-
-    function player:center()
-        local center = Vec:new(UTIL.game.width / 2, UTIL.game.height / 2)
-        center.x = center.x - Player.sprite:getWidth() / 2
-        center.y = center.y - Player.sprite:getHeight() / 2
-        return center
+        local real_pos
+        if self.dir == 1 then
+            real_pos = pos * UTIL.game.scale
+            love.graphics.draw(Player.sprite, real_pos.x, real_pos.y, 0, UTIL.game.scale, UTIL.game.scale)
+        else
+            pos.x = pos.x + Player.sprite:getWidth()
+            real_pos = (pos) * UTIL.game.scale
+            love.graphics.draw(Player.sprite, real_pos.x, real_pos.y, 0, -UTIL.game.scale, UTIL.game.scale)
+        end
     end
 
     function player:update(dt)
@@ -49,6 +50,8 @@ function Player:new(pos, vel, acc)
 
     function player:walk(dir)
         self.vel.x = dir * Player.WALK
+        -- self.dir = dir ~= 0 ? dir : self.dir
+        self.dir = dir ~= 0 and dir or self.dir
     end
 
     function player:getCollider()

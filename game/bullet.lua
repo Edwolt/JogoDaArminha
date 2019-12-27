@@ -14,8 +14,8 @@ function Bullet:new(weapon, pos, vel)
     }
     setmetatable(bullet, self)
 
-    function Bullet:draw()
-        local real_pos = self.pos * UTIL.game.scale
+    function Bullet:draw(pos)
+        local real_pos = (self.pos - pos) * UTIL.game.scale
 
         if self.weapon == 1 then -- Fogo
             love.graphics.setColor(255, 0, 0)
