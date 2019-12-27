@@ -105,7 +105,7 @@ function Scene:new(path)
     end
 
     function scene:wallCollision(that)
-        for _, i in ipairs(self.blocks) do
+        for _, i in ipairs(self.blocks) do -- TODO Otimizar (Uma QuadTree deve ajudar)
             local this = i:getWall()
             if this and this:collision(that) then
                 return i, this
@@ -114,7 +114,7 @@ function Scene:new(path)
     end
 
     function scene:floorCollision(that)
-        for _, i in ipairs(self.blocks) do
+        for _, i in ipairs(self.blocks) do -- TODO Otimizar (Uma QuadTree deve ajudar)
             local this = i:getFloor()
             if this and this:collision(that) then
                 return i, this

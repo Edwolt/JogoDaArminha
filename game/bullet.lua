@@ -1,9 +1,13 @@
 UTIL = UTIL or require "util"
 Modules = Modules or require "modules"
 local Vec = Modules.Vec
+local Collider = Modules.Collider
 
 --* Bullet Class
-local Bullet = {}
+local Bullet = {
+    width = 6,
+    height = 4
+}
 Bullet.__index = Bullet
 
 function Bullet:new(weapon, pos, vel)
@@ -14,7 +18,7 @@ function Bullet:new(weapon, pos, vel)
     }
     setmetatable(bullet, self)
 
-    function Bullet:draw(pos)
+    function bullet:draw(pos)
         local real_pos = (self.pos - pos) * UTIL.game.scale
 
         if self.weapon == 1 then -- Fogo
@@ -26,13 +30,23 @@ function Bullet:new(weapon, pos, vel)
         else
             love.graphics.setColor(255, 255, 255)
         end
-        love.graphics.rectangle("fill", real_pos.x, real_pos.y, 2 * UTIL.game.scale, 2 * UTIL.game.scale)
-        
+        love.graphics.rectangle(
+            "fill",
+            real_pos.x,
+            real_pos.y,
+            Bullet.width * UTIL.game.scale,
+            Bullet.height * UTIL.game.scale
+        )
+
         love.graphics.setColor(255, 255, 255)
     end
 
-    function Bullet:update(dt)
+    function bullet:update(dt)
         self.pos = self.pos + self.vel * dt
+    end
+
+    function bullet:getCollider()
+        return Collider:new(self.pos, self.pos + Vec:new(Bullet.width, Bullet.height))
     end
 
     return bullet

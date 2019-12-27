@@ -21,9 +21,9 @@ function Game:new()
         bullets = Array:new(Game.Bullet),
         scene = Game.scene,
         key = {
-            q = Key:new(0.05, "q"),
-            e = Key:new(0.05, "e"),
-            space = Key:new(0.05, "space")
+            q = Key:new(0.02, "q"),
+            e = Key:new(0.02, "e"),
+            space = Key:new(0.25, "space")
         }
     }
     setmetatable(game, self)
@@ -90,6 +90,14 @@ function Game:new()
                 _, col = self.scene:wallCollision(self.player:getCollider())
             end
         end
+
+        for k, i in ipairs(self.bullets.vet) do
+            local col = i:getCollider()
+            print(col)
+            if self.scene:wallCollision(col) then
+                self.bullets:remove(k)
+            end
+        end
     end
 
     function game:collisionResolve(player, col)
@@ -123,7 +131,7 @@ function Game:new()
 
         if vnum == 1 or vnum == 3 then
             player.vel.x = 0
-        elseif vnum == 4 and  player.vel.y <= 0 then
+        elseif vnum == 4 and player.vel.y <= 0 then
             player.vel.y = 0
         elseif vnum == 2 and player.vel.y >= 0 then
             player.vel.y = 0
