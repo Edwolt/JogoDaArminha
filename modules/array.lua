@@ -30,4 +30,8 @@ function Array:new(class)
     return array
 end
 
+function Array.__ipairs(array)
+    return ipairs(array.vet)
+end
+
 return Array
