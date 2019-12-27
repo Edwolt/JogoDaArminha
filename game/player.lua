@@ -45,7 +45,11 @@ function Player:new(pos, vel, acc)
     end
 
     function player:shoot()
-        return Bullet:new(self.weapon, self.pos, Vec:new(self.shoot_vel, 0))
+        local pos = self.pos:clone()
+        if self.dir == 1 then
+            pos.x = pos.x + Player.sprite:getWidth()
+        end
+        return Bullet:new(self.weapon, self.pos, Vec:new(self.dir * self.shoot_vel, 0))
     end
 
     function player:walk(dir)

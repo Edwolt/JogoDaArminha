@@ -9,6 +9,10 @@ function Vec:new(x, y)
     }
     setmetatable(vec, self)
 
+    function vec:clone()
+        return Vec:new(vec.x, vec.y)
+    end
+
     function vec:norm()
         return math.sqrt(self.x * self.x + self.y * self.y)
     end
