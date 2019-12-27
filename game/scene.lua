@@ -21,27 +21,26 @@ Block.__index = Block
 function Block:new(pos, value)
     local block = {
         pos = pos,
-        value = value, -- 1: Wall; 2: Floor
+        value = value, -- 1:Floor ; 2:Wall
         clock = 0
     }
 
     function block:draw(pos)
         local real_pos = (self.pos - pos) * UTIL.game.scale
         if value == 1 then
-            love.graphics.draw(Block.sprite.dirt, real_pos.x, real_pos.y, 0, UTIL.game.scale)
-        end
-        if value == 2 then
             love.graphics.draw(Block.sprite.grass, real_pos.x, real_pos.y, 0, UTIL.game.scale)
+        elseif value == 2 then
+            love.graphics.draw(Block.sprite.dirt, real_pos.x, real_pos.y, 0, UTIL.game.scale)
         end
     end
 
     function block:update(dt)
         if self.value ~= 1 and self.value ~= 2 then
             self.clock = self.clock - dt
-        end
-        if self.clock <= 0 then
-            self.value = 2
-            self.clock = 0
+            if self.clock <= 0 then
+                self.value = 2
+                self.clock = 0
+            end
         end
     end
 
@@ -52,7 +51,7 @@ function Block:new(pos, value)
     end
 
     function block:getFloor()
-        if self.value == 2 then
+        if self.value == 1 then
             local x1 = self.pos.x + 3
             local y1 = self.pos.y
             local x2 = self.pos.x + Block.width - 3
@@ -84,11 +83,11 @@ function Scene:new(path)
             elseif layer.data[k] == 1 then
                 -- Grass
                 local pos = Vec:new(x * tilemap.tilewidth, y * tilemap.tileheight)
-                table.insert(scene.blocks, Block:new(pos, 2))
+                table.insert(scene.blocks, Block:new(pos, 1))
             elseif layer.data[k] == 2 then
                 -- Dirt
                 local pos = Vec:new(x * tilemap.tilewidth, y * tilemap.tileheight)
-                table.insert(scene.blocks, Block:new(pos, 1))
+                table.insert(scene.blocks, Block:new(pos, 2))
             end
         end
     end
