@@ -31,10 +31,10 @@ function Game:new()
     function game:draw()
         local player_pos = Vec:new(UTIL.game.width / 2, UTIL.game.height / 2)
         local sprite_center = Vec:new(Game.Player.sprite:getWidth() / 2, Game.Player.sprite:getHeight() / 2)
-        player_pos = player_pos
-        self.scene:draw(Vec:new())
+        player_pos = player_pos - sprite_center
+        self.scene:draw(self.player.pos - player_pos)
         self.bullets:draw()
-        self.player:draw(self.player.pos)
+        self.player:draw(player_pos)
 
         local col = self.scene:wallCollision(self.player:getCollider())
         if col then
