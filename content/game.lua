@@ -21,8 +21,8 @@ function Game:new()
         bullets = Array:new(Game.Bullet),
         scene = Game.scene,
         key = {
-            q = Key:new(0.02, "q"),
-            e = Key:new(0.02, "e"),
+            q = Key:new(0.2, "q"),
+            e = Key:new(0.2, "e"),
             space = Key:new(0.25, "space")
         }
     }
@@ -30,7 +30,7 @@ function Game:new()
 
     function game:draw()
         local player_pos = Vec:new(UTIL.game.width / 2, UTIL.game.height / 2)
-        local sprite_center = Vec:new(Game.Player.sprite:getWidth() / 2, Game.Player.sprite:getHeight() / 2)
+        local sprite_center = Vec:new(self.player.width / 2, Game.Player.height / 2)
         player_pos = player_pos - sprite_center
         local scene_pos = self.player.pos - player_pos
         self.scene:draw(scene_pos)
@@ -55,7 +55,7 @@ function Game:new()
         if self.key.e:press() then
             self.player.weapon = self.player.weapon + 1
             if self.player.weapon > 3 then
-                self.player.weapon = 0
+                self.player.weapon = 1
             end
         end
 
@@ -93,7 +93,6 @@ function Game:new()
 
         for k, i in ipairs(self.bullets.vet) do
             local col = i:getCollider()
-            print(col)
             if self.scene:wallCollision(col) then
                 self.bullets:remove(k)
             end

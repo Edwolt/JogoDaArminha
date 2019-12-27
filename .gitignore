@@ -1,6 +1,7 @@
 .vscode/*
 placeholder/*
 tilemap/*
+Piskel/*
 
 # Compiled Lua sources
 luac.out

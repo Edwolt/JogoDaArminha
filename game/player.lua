@@ -10,16 +10,25 @@ local Bullet = Contents.Game.Bullet
 
 --* Player Class
 local Player = {
-    sprite = love.graphics.newImage("placeholder/player.png"),
+    sprite = {
+        love.graphics.newImage("images/fire.png"),
+        love.graphics.newImage("images/water.png"),
+        love.graphics.newImage("images/plant.png")
+    },
     WALK = 200,
     JUMP = 530
 }
-Player.sprite:setFilter("nearest", "nearest")
+for _, i in ipairs(Player.sprite) do
+    i:setFilter("nearest", "nearest")
+end
+Player.width = Player.sprite[2]:getWidth()
+Player.height = Player.sprite[2]:getHeight()
+
 Player.__index = Player
 
 function Player:new(pos, vel, acc)
     local player = {
-        weapon = 1, -- 1: Fogo; 2: Agua; 3: Planta
+        weapon = 1, -- 1:Fire; 2:Water; 3:Plant
         pos = pos or Vec:new(),
         vel = vel or Vec:new(),
         acc = acc or Vec:new(),
@@ -33,11 +42,11 @@ function Player:new(pos, vel, acc)
         local real_pos
         if self.dir == 1 then
             real_pos = pos * UTIL.game.scale
-            love.graphics.draw(Player.sprite, real_pos.x, real_pos.y, 0, UTIL.game.scale, UTIL.game.scale)
+            love.graphics.draw(Player.sprite[self.weapon], real_pos.x, real_pos.y, 0, UTIL.game.scale, UTIL.game.scale)
         else
-            pos.x = pos.x + Player.sprite:getWidth()
+            pos.x = pos.x + Player.width
             real_pos = (pos) * UTIL.game.scale
-            love.graphics.draw(Player.sprite, real_pos.x, real_pos.y, 0, -UTIL.game.scale, UTIL.game.scale)
+            love.graphics.draw(Player.sprite[self.weapon], real_pos.x, real_pos.y, 0, -UTIL.game.scale, UTIL.game.scale)
         end
     end
 
@@ -49,7 +58,7 @@ function Player:new(pos, vel, acc)
     function player:shoot()
         local pos = self.pos:clone()
         if self.dir == 1 then
-            pos.x = pos.x + Player.sprite:getWidth()
+            pos.x = pos.x + Player.width
         end
         return Bullet:new(self.weapon, pos, Vec:new(self.dir * self.shoot_vel, 0))
     end
@@ -74,7 +83,7 @@ function Player:new(pos, vel, acc)
     end
 
     function player:getCollider()
-        local p2 = Vec:new(Player.sprite:getWidth(), Player.sprite:getHeight())
+        local p2 = Vec:new(Player.width, Player.height)
         p2 = self.pos + p2
         return Collider:new(self.pos, p2)
     end

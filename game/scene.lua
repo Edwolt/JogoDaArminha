@@ -7,7 +7,7 @@ local Vec = Modules.Vec
 local Block = {
     sprite = {
         dirt = love.graphics.newImage("placeholder/dirt.png"),
-        grass = love.graphics.newImage("placeholder/grass.png")
+        grass = love.graphics.newImage("images/grass.png")
     }
 }
 Block.sprite.dirt:setFilter("nearest", "nearest")
