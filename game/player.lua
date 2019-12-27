@@ -29,8 +29,6 @@ function Player:new(pos, vel, acc)
     function player:draw(pos)
         local real_pos = pos * UTIL.game.scale
         love.graphics.draw(Player.sprite, real_pos.x, real_pos.y, 0, UTIL.game.scale)
-
-        self:getCollider():draw(UTIL.game.scale, 0, 0, 255) --! Apenas para debug
     end
 
     function player:center()

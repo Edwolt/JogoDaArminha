@@ -74,6 +74,7 @@ function Scene:new(path)
     local layer = tilemap.layers[1]
 
     local scene = {blocks = {}}
+    setmetatable(scene, self)
 
     for y = 0, layer.height - 1 do
         for x = 0, layer.width - 1 do
@@ -92,19 +93,10 @@ function Scene:new(path)
         end
     end
 
-    setmetatable(scene, self)
 
     function scene:draw(pos)
         for _, i in ipairs(self.blocks) do
             i:draw(pos)
-            local col = i:getWall() --! Apenas para debug
-            if col then
-                col:draw(UTIL.game.scale, 255, 0, 0)
-            end
-            col = i:getFloor() --! Apenas pra debug
-            if col then
-                col:draw(UTIL.game.scale, 0, 255, 0)
-            end
         end
     end
 
@@ -118,7 +110,7 @@ function Scene:new(path)
         for _, i in ipairs(self.blocks) do
             local this = i:getWall()
             if this and this:collision(that) then
-                return this --! Voltar para i
+                return this
             end
         end
     end
@@ -127,7 +119,7 @@ function Scene:new(path)
         for _, i in ipairs(self.blocks) do
             local this = i:getFloor()
             if this and this:collision(that) then
-                return this --! Voltar para i
+                return this
             end
         end
     end

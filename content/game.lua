@@ -35,11 +35,6 @@ function Game:new()
         self.scene:draw(self.player.pos - player_pos)
         self.bullets:draw()
         self.player:draw(player_pos)
-
-        local col = self.scene:wallCollision(self.player:getCollider())
-        if col then
-            col:draw(UTIL.game.scale, 0, 255, 255)
-        end
     end
 
     function game:update(dt)
