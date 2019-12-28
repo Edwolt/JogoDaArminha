@@ -1,3 +1,6 @@
+Enums = Enums or require "enums"
+local Elements = Enums.Elements
+
 Modules = Modules or require "modules"
 local Array = Modules.Array
 local Vec = Modules.Vec
@@ -30,7 +33,7 @@ function Game:new()
     setmetatable(game, self)
 
     function game:draw()
-        love.graphics.clear(222, 176, 245)
+        -- love.graphics.clear(222, 176, 245)
 
         local player_pos = UTIL.game:toVec() / 2
         local sprite_center = self.player.tam:toVec() / 2
@@ -39,6 +42,12 @@ function Game:new()
         self.scene:draw(scene_pos)
         self.bullets:draw(scene_pos)
         self.player:draw(player_pos)
+
+        for _, i in self.bullets:ipairs() do
+            local a = i:getArea()
+            a.p1, a.p2 = a.p1 - scene_pos, a.p2 - scene_pos
+            a:draw(UTIL.game.scale, 255, 0, 0)
+        end
     end
 
     function game:update(dt)
@@ -50,16 +59,10 @@ function Game:new()
             self.bullets:add(self.player:shoot())
         end
         if self.key.q:press() then
-            self.player.weapon = self.player.weapon - 1
-            if self.player.weapon < 1 then
-                self.player.weapon = 3
-            end
+            self.player.weapon = Elements.leftRotate(self.player.weapon)
         end
         if self.key.e:press() then
-            self.player.weapon = self.player.weapon + 1
-            if self.player.weapon > 3 then
-                self.player.weapon = 1
-            end
+            self.player.weapon = Elements.rightRotate(self.player.weapon)
         end
 
         local walk = 0
@@ -99,6 +102,7 @@ function Game:new()
             if self.scene:wallCollision(col) then
                 self.bullets:remove(k)
             end
+            self.scene:changeBlocks(i.element, i:getArea())
         end
     end
 

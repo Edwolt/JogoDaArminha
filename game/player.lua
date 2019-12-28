@@ -1,4 +1,8 @@
 UTIL = UTIL or require "util"
+
+Enums = Enums or require "enums"
+local Elements = Enums.Elements
+
 Modules = Modules or require "modules"
 local Vec = Modules.Vec
 local Collider = Modules.Collider
@@ -9,6 +13,7 @@ Contents.Game = Contents.Game or {}
 Contents.Game.Bullet = Contents.Game.Bullet or require "game.bullet"
 local Bullet = Contents.Game.Bullet
 
+
 --* Player Class
 local Player = {
     sprite = {
@@ -17,7 +22,7 @@ local Player = {
         love.graphics.newImage("images/plant.png")
     },
     WALK = 200,
-    JUMP = 530
+    JUMP = 530,
 }
 for _, i in ipairs(Player.sprite) do
     i:setFilter("nearest", "nearest")
@@ -31,7 +36,7 @@ Player.__index = Player
 
 function Player:new(pos, vel, acc)
     local player = {
-        weapon = 1, -- 1:Fire; 2:Water; 3:Plant
+        weapon = Elements.FIRE, -- 1:Fire; 2:Water; 3:Plant
         pos = pos or Vec:new(),
         vel = vel or Vec:new(),
         acc = acc or Vec:new(),

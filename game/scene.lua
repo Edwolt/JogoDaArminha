@@ -1,4 +1,8 @@
 UTIL = UTIL or require "util"
+
+Enums = Enums or require"enums"
+local Elements = Enums.Elements
+
 Modules = Modules or require "modules"
 local Collider = Modules.Collider
 local Array = Modules.Array
@@ -11,8 +15,6 @@ local Block = {
         dirt = love.graphics.newImage("images/dirt.png"),
         grass = love.graphics.newImage("images/grass.png")
     },
-    DIRT = 1,
-    GRASS = 2
 }
 Block.sprite.dirt:setFilter("nearest", "nearest")
 Block.sprite.grass:setFilter("nearest", "nearest")
@@ -31,21 +33,26 @@ function Block:new(pos, value)
 
     function block:draw(pos)
         local real_pos = (self.pos - pos) * UTIL.game.scale
-        if value == Block.GRASS then
+        if self.value == Elements.GRASS then
             love.graphics.draw(self.sprite.grass, real_pos.x, real_pos.y, 0, UTIL.game.scale)
-        elseif value == Block.DIRT then
+        elseif self.value == Elements.DIRT then
             love.graphics.draw(self.sprite.dirt, real_pos.x, real_pos.y, 0, UTIL.game.scale)
         end
     end
 
     function block:update(dt)
-        if self.value ~= Block.DIRT and self.value ~= Block.GRASS then
+        if self.value ~= Elements.DIRT and self.value ~= Elements.GRASS then
             self.clock = self.clock - dt
             if self.clock <= 0 then
-                self.value = Block.GRASS
+                self.value = Elements.GRASS
                 self.clock = 0
             end
         end
+    end
+
+    function block:change(element, clock)
+        self.element = element
+        self.clock = clock or 1
     end
 
     function block:getWall()
@@ -54,7 +61,7 @@ function Block:new(pos, value)
     end
 
     function block:getFloor()
-        if self.value == Block.GRASS then
+        if self.value == Elements.GRASS then
             local x1 = self.pos.x + 3
             local y1 = self.pos.y
             local x2 = self.pos.x + self.tam.width - 3
@@ -86,11 +93,11 @@ function Scene:new(path)
             elseif layer.data[k] == 1 then
                 -- Grass
                 local pos = Vec:new(x * tilemap.tilewidth, y * tilemap.tileheight)
-                scene.blocks:add(pos, Block.GRASS)
+                scene.blocks:add(pos, Elements.GRASS)
             elseif layer.data[k] == 2 then
                 -- Dirt
                 local pos = Vec:new(x * tilemap.tilewidth, y * tilemap.tileheight)
-                scene.blocks:add(pos, Block.DIRT)
+                scene.blocks:add(pos, Elements.DIRT)
             end
         end
     end
@@ -104,9 +111,12 @@ function Scene:new(path)
     end
 
     function scene:changeBlocks(element, that)
-        for _, i in self.bolcks:ipairs() do
+        for _, i in self.blocks:ipairs() do
             local this = i:getWall()
-            if this and this:collision(that) and this.value == 2 then
+            if this and this:collision(that) and i.value == Elements.GRASS then
+                print("col", element)
+                i.value = element
+                i.clock = 1
             end
         end
     end
