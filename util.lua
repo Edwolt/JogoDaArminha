@@ -1,9 +1,9 @@
+Modules = Modules or require "modules"
+local newDimensions = Modules.newDimensions
+
 local UTIL = {}
 
-UTIL.window = {
-    width = love.graphics.getWidth(),
-    height = love.graphics.getHeight()
-}
+UTIL.window = newDimensions(love.graphics.getWidth(), love.graphics.getHeight())
 
 UTIL.game = {}
 UTIL.game.height = 500
@@ -26,9 +26,9 @@ function UTIL.printw(text, font, x, y, limit, align, scale)
         love.graphics.setFont(font)
     end
 
-    local font_width = font:getWidth(text)
-    local font_height = font:getHeight()
-    local text_height = scale * (font_width * scale / limit + 1) * font_height
+    local fontdim = newDimensions(font:getWidth(text), font:getHeight())
+
+    local text_height = scale * (fontdim.width * scale / limit + 1) * fontdim.height
     love.graphics.printf(text, x, y, limit / scale, align, 0, scale)
     return text_height
 end
