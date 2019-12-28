@@ -1,3 +1,4 @@
+--* Array Class
 local Array = {}
 Array.__index = Array
 

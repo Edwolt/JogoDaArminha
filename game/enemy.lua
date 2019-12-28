@@ -1,6 +1,7 @@
 Modules = Modules or require "modules"
 local Vec = Modules.Vec
 
+--* Enemy Class
 local Enemy = {}
 Enemy.__index = Enemy
 

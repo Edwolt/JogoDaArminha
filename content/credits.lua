@@ -20,7 +20,7 @@ Credits.__index = Credits
 
 function Credits:new()
     local credits = {}
-    setmetatable(credits, Credits)
+    setmetatable(credits, self)
 
     function credits:update(dt)
     end

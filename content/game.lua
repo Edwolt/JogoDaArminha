@@ -8,6 +8,7 @@ Contents = Contents or {}
 Contents.Game = Contents.Game or {}
 local Game = Contents.Game
 Game.Player = Game.Player or require "game.player"
+Game.Enemy = Game.Enemy or require "game.enemy"
 Game.Bullet = Game.Bullet or require "game.bullet"
 Game.Scene = Game.Scene or require "game.scene"
 
