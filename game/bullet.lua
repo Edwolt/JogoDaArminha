@@ -2,17 +2,18 @@ UTIL = UTIL or require "util"
 Modules = Modules or require "modules"
 local Vec = Modules.Vec
 local Collider = Modules.Collider
+local Dimensions = Modules.Dimensions
 
 --* Bullet Class
 local Bullet = {
-    width = 6,
-    height = 4
+    col = Dimensions:new(6, 4),
+    area = Dimensions:new(96, 96)
 }
 Bullet.__index = Bullet
 
 function Bullet:new(weapon, pos, vel)
     local bullet = {
-        weapon = weapon,
+        element = weapon,
         pos = pos or Vec:new(),
         vel = vel or Vec:new()
     }
@@ -21,11 +22,11 @@ function Bullet:new(weapon, pos, vel)
     function bullet:draw(pos)
         local real_pos = (self.pos - pos) * UTIL.game.scale
 
-        if self.weapon == 1 then -- Fogo
+        if self.element == 1 then -- Fogo
             love.graphics.setColor(255, 0, 0)
-        elseif self.weapon == 2 then -- Agua
+        elseif self.element == 2 then -- Agua
             love.graphics.setColor(0, 0, 255)
-        elseif self.weapon == 3 then -- Planta
+        elseif self.element == 3 then -- Planta
             love.graphics.setColor(0, 255, 0)
         else
             love.graphics.setColor(255, 255, 255)
@@ -34,8 +35,8 @@ function Bullet:new(weapon, pos, vel)
             "fill",
             real_pos.x,
             real_pos.y,
-            Bullet.width * UTIL.game.scale,
-            Bullet.height * UTIL.game.scale
+            self.col.width * UTIL.game.scale,
+            self.col.height * UTIL.game.scale
         )
 
         love.graphics.setColor(255, 255, 255)
@@ -46,7 +47,12 @@ function Bullet:new(weapon, pos, vel)
     end
 
     function bullet:getCollider()
-        return Collider:new(self.pos, self.pos + Vec:new(Bullet.width, Bullet.height))
+        return Collider:new(self.pos, self.pos + self.col:toVec())
+    end
+
+    function bullet:getArea()
+        local p1 = self.pos + self.col:toVec() / 2 - self.area:toVec() / 2
+        return Collider:new(p1, p1 + self.area:toVec())
     end
 
     return bullet
