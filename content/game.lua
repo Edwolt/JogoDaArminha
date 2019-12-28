@@ -29,6 +29,8 @@ function Game:new()
     setmetatable(game, self)
 
     function game:draw()
+        love.graphics.clear(222, 176, 245)
+
         local player_pos = Vec:new(UTIL.game.width / 2, UTIL.game.height / 2)
         local sprite_center = Vec:new(self.player.width / 2, Game.Player.height / 2)
         player_pos = player_pos - sprite_center
