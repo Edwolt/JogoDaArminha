@@ -14,6 +14,7 @@ Game.Player = Game.Player or require "game.player"
 Game.Enemy = Game.Enemy or require "game.enemy"
 Game.Bullet = Game.Bullet or require "game.bullet"
 Game.Scene = Game.Scene or require "game.scene"
+Game.Block = Game.Block or require "game.block"
 
 Game.scene = Game.Scene:new("level")
 
