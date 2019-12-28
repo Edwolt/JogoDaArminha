@@ -10,7 +10,9 @@ local Block = {
     sprite = {
         dirt = love.graphics.newImage("images/dirt.png"),
         grass = love.graphics.newImage("images/grass.png")
-    }
+    },
+    DIRT = 1,
+    GRASS = 2
 }
 Block.sprite.dirt:setFilter("nearest", "nearest")
 Block.sprite.grass:setFilter("nearest", "nearest")
@@ -29,18 +31,18 @@ function Block:new(pos, value)
 
     function block:draw(pos)
         local real_pos = (self.pos - pos) * UTIL.game.scale
-        if value == 1 then
+        if value == Block.GRASS then
             love.graphics.draw(self.sprite.grass, real_pos.x, real_pos.y, 0, UTIL.game.scale)
-        elseif value == 2 then
+        elseif value == Block.DIRT then
             love.graphics.draw(self.sprite.dirt, real_pos.x, real_pos.y, 0, UTIL.game.scale)
         end
     end
 
     function block:update(dt)
-        if self.value ~= 1 and self.value ~= 2 then
+        if self.value ~= Block.DIRT and self.value ~= Block.GRASS then
             self.clock = self.clock - dt
             if self.clock <= 0 then
-                self.value = 2
+                self.value = Block.GRASS
                 self.clock = 0
             end
         end
@@ -52,7 +54,7 @@ function Block:new(pos, value)
     end
 
     function block:getFloor()
-        if self.value == 1 then
+        if self.value == Block.GRASS then
             local x1 = self.pos.x + 3
             local y1 = self.pos.y
             local x2 = self.pos.x + self.tam.width - 3
@@ -84,11 +86,11 @@ function Scene:new(path)
             elseif layer.data[k] == 1 then
                 -- Grass
                 local pos = Vec:new(x * tilemap.tilewidth, y * tilemap.tileheight)
-                scene.blocks:add(pos, 1)
+                scene.blocks:add(pos, Block.GRASS)
             elseif layer.data[k] == 2 then
                 -- Dirt
                 local pos = Vec:new(x * tilemap.tilewidth, y * tilemap.tileheight)
-                scene.blocks:add(pos, 2)
+                scene.blocks:add(pos, Block.DIRT)
             end
         end
     end
@@ -101,7 +103,12 @@ function Scene:new(path)
         self.blocks:update(dt)
     end
 
-    function scene:changeBlocks(element, collider)
+    function scene:changeBlocks(element, that)
+        for _, i in self.bolcks:ipairs() do
+            local this = i:getWall()
+            if this and this:collision(that) and this.value == 2 then
+            end
+        end
     end
 
     function scene:wallCollision(that)
