@@ -2,12 +2,12 @@ UTIL = UTIL or require "util"
 Modules = Modules or require "modules"
 local Vec = Modules.Vec
 local Collider = Modules.Collider
-local Dimensions = Modules.Dimensions
+local Dim = Modules.Dim
 
 --* Bullet Class
 local Bullet = {
-    col = Dimensions:new(6, 4),
-    area = Dimensions:new(96, 96)
+    col = Dim:new(6, 4),
+    area = Dim:new(96, 96)
 }
 Bullet.__index = Bullet
 
