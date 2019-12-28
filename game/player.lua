@@ -21,8 +21,11 @@ local Player = {
 for _, i in ipairs(Player.sprite) do
     i:setFilter("nearest", "nearest")
 end
-Player.width = Player.sprite[2]:getWidth()
-Player.height = Player.sprite[2]:getHeight()
+
+local player_sprite = love.graphics.newImage("images/player.png")
+Player.width = player_sprite:getWidth()
+Player.height = player_sprite:getHeight()
+player_sprite = nil
 
 Player.__index = Player
 
