@@ -1,6 +1,7 @@
 UTIL = UTIL or require "util"
 Modules = Modules or require "modules"
 local Collider = Modules.Collider
+local Array = Modules.Array
 local Vec = Modules.Vec
 local Dim = Modules.Dim
 
@@ -72,7 +73,7 @@ function Scene:new(path)
     local tilemap = require("tilemap/" .. path)
     local layer = tilemap.layers[1]
 
-    local scene = {blocks = {}}
+    local scene = {blocks = Array:new(Block)}
     setmetatable(scene, self)
 
     for y = 0, layer.height - 1 do
@@ -83,29 +84,28 @@ function Scene:new(path)
             elseif layer.data[k] == 1 then
                 -- Grass
                 local pos = Vec:new(x * tilemap.tilewidth, y * tilemap.tileheight)
-                table.insert(scene.blocks, Block:new(pos, 1))
+                scene.blocks:add(pos, 1)
             elseif layer.data[k] == 2 then
                 -- Dirt
                 local pos = Vec:new(x * tilemap.tilewidth, y * tilemap.tileheight)
-                table.insert(scene.blocks, Block:new(pos, 2))
+                scene.blocks:add(pos, 2)
             end
         end
     end
 
     function scene:draw(pos)
-        for _, i in ipairs(self.blocks) do
-            i:draw(pos)
-        end
+        self.blocks:draw(pos)
     end
 
     function scene:update(dt)
-        for _, i in ipairs(self.blocks) do
-            i:update(dt)
-        end
+        self.blocks:update(dt)
+    end
+
+    function scene:changeBlocks(element, collider)
     end
 
     function scene:wallCollision(that)
-        for _, i in ipairs(self.blocks) do -- TODO Otimizar (Uma QuadTree deve ajudar)
+        for _, i in ipairs(self.blocks.vet) do -- TODO Otimizar (Uma QuadTree deve ajudar)
             local this = i:getWall()
             if this and this:collision(that) then
                 return i, this
@@ -114,7 +114,7 @@ function Scene:new(path)
     end
 
     function scene:floorCollision(that)
-        for _, i in ipairs(self.blocks) do -- TODO Otimizar (Uma QuadTree deve ajudar)
+        for _, i in ipairs(self.blocks.vet) do -- TODO Otimizar (Uma QuadTree deve ajudar)
             local this = i:getFloor()
             if this and this:collision(that) then
                 return i, this
