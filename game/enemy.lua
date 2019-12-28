@@ -8,7 +8,8 @@ function Enemy:new(pos, vel, acc)
     local enemy = {
         pos = pos or Vec:new(),
         vel = vel or Vec:new(),
-        acc = acc or Vec:new()
+        acc = acc or Vec:new(),
+        life = 10
     }
     setmetatable(enemy, self)
 

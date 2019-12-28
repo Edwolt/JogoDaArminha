@@ -37,7 +37,8 @@ function Player:new(pos, vel, acc)
         acc = acc or Vec:new(),
         shoot_vel = 450,
         dir = 1,
-        onJump = false
+        onJump = false,
+        life = 30 -- TODO
     }
     setmetatable(player, self)
 
