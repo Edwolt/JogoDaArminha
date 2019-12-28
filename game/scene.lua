@@ -51,9 +51,8 @@ function Scene:new(path)
     function scene:changeBlocks(element, that)
         for _, i in self.blocks:ipairs() do
             local this = i:getWall()
-            if this and this:collision(that) and i.value == Elements.GRASS then
-                i.value = element
-                i.clock = 1
+            if this and this:collision(that)then
+                i:change()
             end
         end
     end
