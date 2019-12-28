@@ -6,7 +6,7 @@ local Vec = Modules.Vec
 --* Block Class
 local Block = {
     sprite = {
-        dirt = love.graphics.newImage("placeholder/dirt.png"),
+        dirt = love.graphics.newImage("images/dirt.png"),
         grass = love.graphics.newImage("images/grass.png")
     }
 }
