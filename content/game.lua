@@ -93,7 +93,7 @@ function Game:new()
             end
         end
 
-        for k, i in ipairs(self.bullets.vet) do
+        for k, i in self.bullets:ipairs() do
             local col = i:getCollider()
             if self.scene:wallCollision(col) then
                 self.bullets:remove(k)

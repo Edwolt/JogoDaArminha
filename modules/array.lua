@@ -32,16 +32,8 @@ function Array:new(class)
         end
     end
 
-    function array:foreach(func, ...)
-        for _, i in ipairs(self.vet) do
-            func(i, func)
-        end
-    end
-
-    function array:doeach(func, ...)
-        for _, i in ipairs(self.vet) do
-            i[func](i, ...)
-        end
+    function array:ipairs()
+        return ipairs(self.vet)
     end
     return array
 end
