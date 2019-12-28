@@ -2,6 +2,7 @@ UTIL = UTIL or require "util"
 Modules = Modules or require "modules"
 local Collider = Modules.Collider
 local Vec = Modules.Vec
+local Dim = Modules.Dim
 
 --* Block Class
 local Block = {
@@ -13,8 +14,7 @@ local Block = {
 Block.sprite.dirt:setFilter("nearest", "nearest")
 Block.sprite.grass:setFilter("nearest", "nearest")
 
-Block.width = Block.sprite.dirt:getWidth()
-Block.height = Block.sprite.dirt:getHeight()
+Block.tam = Dim:extract(Block.sprite.dirt)
 
 Block.__index = Block
 
@@ -24,13 +24,14 @@ function Block:new(pos, value)
         value = value, -- 1:Floor ; 2:Wall
         clock = 0
     }
+    setmetatable(block, self)
 
     function block:draw(pos)
         local real_pos = (self.pos - pos) * UTIL.game.scale
         if value == 1 then
-            love.graphics.draw(Block.sprite.grass, real_pos.x, real_pos.y, 0, UTIL.game.scale)
+            love.graphics.draw(self.sprite.grass, real_pos.x, real_pos.y, 0, UTIL.game.scale)
         elseif value == 2 then
-            love.graphics.draw(Block.sprite.dirt, real_pos.x, real_pos.y, 0, UTIL.game.scale)
+            love.graphics.draw(self.sprite.dirt, real_pos.x, real_pos.y, 0, UTIL.game.scale)
         end
     end
 
@@ -45,8 +46,7 @@ function Block:new(pos, value)
     end
 
     function block:getWall()
-        local p2 = Vec:new(Block.width, Block.height)
-        p2 = p2 + self.pos
+        local p2 = self.tam:toVec() + self.pos
         return Collider:new(self.pos, p2)
     end
 
@@ -54,7 +54,7 @@ function Block:new(pos, value)
         if self.value == 1 then
             local x1 = self.pos.x + 3
             local y1 = self.pos.y
-            local x2 = self.pos.x + Block.width - 3
+            local x2 = self.pos.x + self.tam.width - 3
             local y2 = self.pos.y + 2
             return Collider:new(x1, y1, x2, y2)
         end

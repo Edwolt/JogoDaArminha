@@ -2,6 +2,7 @@ UTIL = UTIL or require "util"
 Modules = Modules or require "modules"
 local Vec = Modules.Vec
 local Collider = Modules.Collider
+local Dim = Modules.Dim
 
 Contents = Contents or {}
 Contents.Game = Contents.Game or {}
@@ -23,8 +24,7 @@ for _, i in ipairs(Player.sprite) do
 end
 
 local player_sprite = love.graphics.newImage("images/player.png")
-Player.width = player_sprite:getWidth()
-Player.height = player_sprite:getHeight()
+Player.tam = Dim:extract(player_sprite)
 player_sprite = nil
 
 Player.__index = Player
@@ -45,11 +45,11 @@ function Player:new(pos, vel, acc)
         local real_pos
         if self.dir == 1 then
             real_pos = pos * UTIL.game.scale
-            love.graphics.draw(Player.sprite[self.weapon], real_pos.x, real_pos.y, 0, UTIL.game.scale, UTIL.game.scale)
+            love.graphics.draw(self.sprite[self.weapon], real_pos.x, real_pos.y, 0, UTIL.game.scale, UTIL.game.scale)
         else
-            pos.x = pos.x + Player.width
+            pos.x = pos.x + self.tam.width
             real_pos = (pos) * UTIL.game.scale
-            love.graphics.draw(Player.sprite[self.weapon], real_pos.x, real_pos.y, 0, -UTIL.game.scale, UTIL.game.scale)
+            love.graphics.draw(self.sprite[self.weapon], real_pos.x, real_pos.y, 0, -UTIL.game.scale, UTIL.game.scale)
         end
     end
 
@@ -61,20 +61,20 @@ function Player:new(pos, vel, acc)
     function player:shoot()
         local pos = self.pos:clone()
         if self.dir == 1 then
-            pos.x = pos.x + Player.width
+            pos.x = pos.x + self.tam.width
         end
         return Bullet:new(self.weapon, pos, Vec:new(self.dir * self.shoot_vel, 0))
     end
 
     function player:walk(dir)
-        self.vel.x = dir * Player.WALK
+        self.vel.x = dir * self.WALK
 
         -- self.dir = dir ~= 0 ? dir : self.dir
         self.dir = dir ~= 0 and dir or self.dir
     end
 
     function player:jump()
-        self.vel.y = -Player.JUMP
+        self.vel.y = -self.JUMP
         self.onJump = true
     end
 
@@ -86,7 +86,7 @@ function Player:new(pos, vel, acc)
     end
 
     function player:getCollider()
-        local p2 = Vec:new(Player.width, Player.height)
+        local p2 = self.tam:toVec()
         p2 = self.pos + p2
         return Collider:new(self.pos, p2)
     end

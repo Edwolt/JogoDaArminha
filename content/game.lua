@@ -31,8 +31,8 @@ function Game:new()
     function game:draw()
         love.graphics.clear(222, 176, 245)
 
-        local player_pos = Vec:new(UTIL.game.width / 2, UTIL.game.height / 2)
-        local sprite_center = Vec:new(self.player.width / 2, Game.Player.height / 2)
+        local player_pos = UTIL.game:toVec() / 2
+        local sprite_center = self.player.tam:toVec() / 2
         player_pos = player_pos - sprite_center
         local scene_pos = self.player.pos - player_pos
         self.scene:draw(scene_pos)

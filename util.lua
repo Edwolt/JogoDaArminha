@@ -5,7 +5,7 @@ local UTIL = {}
 
 UTIL.window = Dim:new(love.graphics.getWidth(), love.graphics.getHeight())
 
-UTIL.game = {}
+UTIL.game = Dim:new()
 UTIL.game.height = 500
 UTIL.game.scale = UTIL.window.height / UTIL.game.height
 UTIL.game.width = UTIL.window.width / UTIL.game.scale
