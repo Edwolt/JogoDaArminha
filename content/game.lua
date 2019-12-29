@@ -44,6 +44,7 @@ function Game:new()
         self.bullets:draw(scene_pos)
         self.player:draw(player_pos)
 
+        self.player:lifeDraw()
         for _, i in self.bullets:ipairs() do
             local a = i:getArea()
             a.p1, a.p2 = a.p1 - scene_pos, a.p2 - scene_pos

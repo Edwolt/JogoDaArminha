@@ -13,7 +13,6 @@ Contents.Game = Contents.Game or {}
 Contents.Game.Bullet = Contents.Game.Bullet or require "game.bullet"
 local Bullet = Contents.Game.Bullet
 
-
 --* Player Class
 local Player = {
     sprite = {
@@ -22,7 +21,7 @@ local Player = {
         love.graphics.newImage("images/plant.png")
     },
     WALK = 200,
-    JUMP = 530,
+    JUMP = 530
 }
 for _, i in ipairs(Player.sprite) do
     i:setFilter("nearest", "nearest")
@@ -57,6 +56,19 @@ function Player:new(pos, vel, acc)
             real_pos = (pos) * UTIL.game.scale
             love.graphics.draw(self.sprite[self.weapon], real_pos.x, real_pos.y, 0, -UTIL.game.scale, UTIL.game.scale)
         end
+    end
+
+    function player:lifeDraw()
+        local pos = Vec:new(UTIL.window.width / 2, UTIL.window.height - 50)
+        local bar = Dim:new(self.life * 10, 20)
+        pos = pos - bar:toVec() / 2
+        local border = 1
+
+        love.graphics.setColor(255, 255, 255)
+        love.graphics.rectangle("fill", pos.x - border, pos.y - border, bar.width + 2 * border, bar.height + 2 * border)
+        love.graphics.setColor(255, 0, 0)
+        love.graphics.rectangle("fill", pos.x, pos.y, bar.width, bar.height)
+        love.graphics.setColor(255, 255, 255)
     end
 
     function player:update(dt)
