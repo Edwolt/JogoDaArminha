@@ -98,25 +98,28 @@ Water = {} -- {clock, water}
 function Water:draw(pos)
     local real_pos = (self.pos - pos) * UTIL.game.scale
 
-    if self.hot <= 0 then
+    if self.hot <= 1 then
         love.graphics.draw(Sprites.water[1], real_pos.x, real_pos.y, 0, UTIL.game.scale)
-    elseif 0 < self.hot and self.hot <= 1 then
-        love.graphics.draw(Sprites.water[2], real_pos.x, real_pos.y, 0, UTIL.game.scale)
     elseif 1 < self.hot and self.hot <= 2 then
-        love.graphics.draw(Sprites.water[3], real_pos.x, real_pos.y, 0, UTIL.game.scale)
+        love.graphics.draw(Sprites.water[2], real_pos.x, real_pos.y, 0, UTIL.game.scale)
     elseif 2 < self.hot and self.hot <= 3 then
+        love.graphics.draw(Sprites.water[3], real_pos.x, real_pos.y, 0, UTIL.game.scale)
+    elseif 3 < self.hot and self.hot <= 4 then
         love.graphics.draw(Sprites.water[4], real_pos.x, real_pos.y, 0, UTIL.game.scale)
-    elseif 3 < self.hot then
+    elseif 4 < self.hot then
         love.graphics.draw(Sprites.water[5], real_pos.x, real_pos.y, 0, UTIL.game.scale)
     end
 end
 
 function Water:update(dt)
-    self.clock = self.clock - dt
-    if self.clock < 0 then
+    -- clock = clock - dt > 0 ? clock - dt : 0
+    self.clock = self.clock - dt > 0 and self.clock - dt or 0
+    
+    if self.clock <= 0 and self.hot <= 0 then
         changeBlock(self, Grass)
         self.clock = nil
     end
+    
     -- hot = hot - dt*K >= 0 ? hot - dt*K : 0
     self.hot = self.hot - dt >= 0 and self.hot - dt or 0
 end
