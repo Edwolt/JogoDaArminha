@@ -51,8 +51,8 @@ function Scene:new(path)
     function scene:changeBlocks(element, that)
         for _, i in self.blocks:ipairs() do
             local this = i:getWall()
-            if this and this:collision(that)then
-                i:change()
+            if this and this:collision(that) then
+                i:change(element, 10)
             end
         end
     end
