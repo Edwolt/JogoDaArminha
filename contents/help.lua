@@ -12,7 +12,11 @@ end
 --* Help Class
 local Help = {
     lines = {
-        newLine("Instruções", 7)
+        newLine("Instruções", 7),
+        newLine(),
+        newLine(
+            "Para ver as instruções entre no menu principal, use as setas ou o ws para selecionar instruções e aperte enter"
+        )
     },
     vel_y = 250
 }

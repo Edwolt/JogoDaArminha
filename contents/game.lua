@@ -27,7 +27,7 @@ function Game:new()
             e = Key:new(0.2, "e"),
             space = Key:new(0.25, "space")
         },
-        dev = false -- Desenha colisores
+        dev = false -- Draw the colliders
     }
     local s = Game.Scene:new("level")
     game.scene = s.scene
