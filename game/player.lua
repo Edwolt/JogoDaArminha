@@ -52,7 +52,7 @@ function Player:new(pos, vel, acc)
             real_pos = pos * UTIL.game.scale
             love.graphics.draw(self.sprite[self.weapon], real_pos.x, real_pos.y, 0, UTIL.game.scale, UTIL.game.scale)
         else
-            pos = pos:clone()
+            pos = pos:copy()
             pos.x = pos.x + self.tam.width
             real_pos = (pos) * UTIL.game.scale
             love.graphics.draw(self.sprite[self.weapon], real_pos.x, real_pos.y, 0, -UTIL.game.scale, UTIL.game.scale)
@@ -84,7 +84,7 @@ function Player:new(pos, vel, acc)
     end
 
     function player:shoot()
-        local pos = self.pos:clone()
+        local pos = self.pos:copy()
         if self.dir == 1 then
             pos.x = pos.x + self.tam.width
         end

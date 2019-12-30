@@ -18,6 +18,7 @@ local nofunc = function()
 end
 
 local function changeBlock(old, new)
+    old.element = new.element
     old.draw = new.draw
     old.update = new.update
     old.change = new.change
@@ -51,7 +52,7 @@ function Commons:getWall()
 end
 
 --* Dirt Block
-Dirt = {}
+Dirt = {element = Elements.DIRT}
 function Dirt:draw(pos)
     local real_pos = (self.pos - pos) * UTIL.game.scale
     love.graphics.draw(Sprites.dirt, real_pos.x, real_pos.y, 0, UTIL.game.scale)
@@ -63,7 +64,7 @@ Dirt.getWall = Commons.getWall
 Dirt.getFloor = nofunc
 
 --* Grass Block
-Grass = {}
+Grass = {element = Elements.GRASS}
 function Grass:draw(pos)
     local real_pos = (self.pos - pos) * UTIL.game.scale
     love.graphics.draw(Sprites.grass, real_pos.x, real_pos.y, 0, UTIL.game.scale)
@@ -76,9 +77,7 @@ function Grass:change(element, clock)
         changeBlock(self, Water)
         self.clock = clock
         self.hot = 0
-    else
-        changeBlock(self, Dirt)
-    end
+    end -- TODO
 end
 
 Grass.getWall = Commons.getWall
@@ -94,7 +93,7 @@ end
 --TODO Fire Block
 
 --* Water Block
-Water = {} -- {clock, water}
+Water = {element = Elements.WATER} -- {clock, hot}
 function Water:draw(pos)
     local real_pos = (self.pos - pos) * UTIL.game.scale
 
@@ -178,7 +177,7 @@ function Block:new(pos, value)
             local aux2 = wall.p2 - pos
             Collider:new(aux1, aux2):draw(color1)
         end
-        
+
         local floor = self:getFloor()
         if floor then
             local aux1 = floor.p1 - pos

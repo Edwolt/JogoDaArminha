@@ -9,7 +9,7 @@ function Vec:new(x, y)
     }
     setmetatable(vec, self)
 
-    function vec:clone()
+    function vec:copy()
         return Vec:new(vec.x, vec.y)
     end
 
