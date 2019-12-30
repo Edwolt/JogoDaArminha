@@ -16,15 +16,13 @@ Game.Bullet = Game.Bullet or require "game.bullet"
 Game.Scene = Game.Scene or require "game.scene"
 Game.Block = Game.Block or require "game.block"
 
-Game.scene = Game.Scene:new("level")
-
 Game.__index = Game
 
 function Game:new()
     local game = {
         player = Game.Player:new(Vec:new(65, 65), nil, Vec:new(0, UTIL.values.gravity)),
         bullets = Array:new(Game.Bullet),
-        scene = Game.scene,
+        scene = Game.Scene:new("level"),
         key = {
             q = Key:new(0.2, "q"),
             e = Key:new(0.2, "e"),
@@ -83,8 +81,14 @@ function Game:new()
         self.player:update(dt)
         self.bullets:update(dt)
 
-        local _, col = self.scene:floorCollision(self.player:getCollider())
+        local i, col = self.scene:floorCollision(self.player:getCollider())
         if col then
+            if i.element == Elements.WATER and i.hot >= 1 then
+                self.player.life = self.player.life - i.hot * dt
+                if self.player.life < 0 then
+                    return "Menu"
+                end
+            end
             if love.keyboard.isDown("w", "up") then
                 self.player:jump()
             end

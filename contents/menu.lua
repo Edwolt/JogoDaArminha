@@ -13,15 +13,17 @@ local function newOption(text, class)
 end
 
 --* Menu Class
-local Menu = {}
+local Menu = {
+    options = {
+        newOption("Jogar", "Game"),
+        newOption("Instruções", "Help"),
+        newOption("Creditos", "Credits")
+    }
+}
 Menu.__index = Menu
 
 function Menu:new()
     local menu = {
-        options = {
-            newOption("Jogar", "Game"),
-            newOption("Creditos", "Credits")
-        },
         sel = 1,
         key = {
             down = Key:new(0.1, "s", "down"),
@@ -60,7 +62,7 @@ function Menu:new()
         y = y + 50
         y = y + UTIL.printw(text, Fonts.PressStart2P, 50, y, limit, "center", 3)
         y = y + 200
-        local x = UTIL.window.width / 2 - 100
+        local x = UTIL.window.width / 2 - 150
         for n, i in ipairs(self.options) do
             if n == self.sel then
                 local w = Fonts.PressStart2P:getWidth("> ") * 3
