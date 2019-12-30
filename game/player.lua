@@ -16,9 +16,9 @@ local Bullet = Contents.Game.Bullet
 --* Player Class
 local Player = {
     sprite = {
-        love.graphics.newImage("images/fire.png"),
-        love.graphics.newImage("images/water.png"),
-        love.graphics.newImage("images/plant.png")
+        [Elements.FIRE] = love.graphics.newImage("images/playerf.png"),
+        [Elements.WATER] = love.graphics.newImage("images/playerw.png"),
+        [Elements.PLANT] = love.graphics.newImage("images/playerp.png")
     },
     WALK = 200,
     JUMP = 530

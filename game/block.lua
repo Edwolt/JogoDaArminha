@@ -31,11 +31,11 @@ Sprites = {
     dirt = love.graphics.newImage("images/dirt.png"),
     grass = love.graphics.newImage("images/grass.png"),
     water = {
-        love.graphics.newImage("images/w1.png"),
-        love.graphics.newImage("images/w2.png"),
-        love.graphics.newImage("images/w3.png"),
-        love.graphics.newImage("images/w4.png"),
-        love.graphics.newImage("images/w5.png")
+        love.graphics.newImage("images/water1.png"),
+        love.graphics.newImage("images/water2.png"),
+        love.graphics.newImage("images/water3.png"),
+        love.graphics.newImage("images/water4.png"),
+        love.graphics.newImage("images/water5.png")
     }
 }
 Sprites.dirt:setFilter("nearest", "nearest")
