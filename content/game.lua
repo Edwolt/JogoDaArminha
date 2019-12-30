@@ -48,7 +48,7 @@ function Game:new()
 
         if self.dev then
             --self.scene:drawDev(scene_pos)
-            self.scene:drawDev(scene_pos, {255, 0, 0}, {0, 255, 0})
+            self.scene:drawDev(scene_pos, {255, 255, 0}, {0, 255, 0})
             self.player:drawDev(player_pos, {0, 0, 255})
             self.bullets:drawDev(scene_pos, {255, 0, 255})
         end
