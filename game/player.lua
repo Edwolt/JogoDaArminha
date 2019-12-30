@@ -52,13 +52,14 @@ function Player:new(pos, vel, acc)
             real_pos = pos * UTIL.game.scale
             love.graphics.draw(self.sprite[self.weapon], real_pos.x, real_pos.y, 0, UTIL.game.scale, UTIL.game.scale)
         else
+            pos = pos:clone()
             pos.x = pos.x + self.tam.width
             real_pos = (pos) * UTIL.game.scale
             love.graphics.draw(self.sprite[self.weapon], real_pos.x, real_pos.y, 0, -UTIL.game.scale, UTIL.game.scale)
         end
     end
 
-    function player:lifeDraw()
+    function player:drawLife()
         local pos = Vec:new(UTIL.window.width / 2, UTIL.window.height - 50)
         local bar = Dim:new(self.life * 10, 20)
         pos = pos - bar:toVec() / 2
@@ -69,6 +70,12 @@ function Player:new(pos, vel, acc)
         love.graphics.setColor(255, 0, 0)
         love.graphics.rectangle("fill", pos.x, pos.y, bar.width, bar.height)
         love.graphics.setColor(255, 255, 255)
+    end
+
+    function player:drawDev(pos, color)
+        local col = self:getCollider()
+        local aux = col.p2 - col.p1
+        Collider:new(pos, pos + aux):draw(color)
     end
 
     function player:update(dt)

@@ -39,16 +39,17 @@ function Collider:new(x1, y1, x2, y2)
             self.p2.y > other.p1.y
     end
 
-    function collider:draw(scale, r, g, b) --! Apenas para debug
+    function collider:draw(color) --! Apenas para debug
+        UTIL = UTIL or require "util"
+
+        local r, g, b = unpack(color)
         love.graphics.setColor(r, g, b)
 
-        local aux1 = self.p1
         local aux2 = self.p2 - self.p1
-        aux1 = aux1 * scale
-        aux2 = aux2 * scale
+        aux2 = aux2 * UTIL.game.scale
+        local aux1 = self.p1 * UTIL.game.scale
 
         love.graphics.rectangle("line", aux1.x, aux1.y, aux2.x, aux2.y)
-
         love.graphics.setColor(255, 255, 255)
     end
 

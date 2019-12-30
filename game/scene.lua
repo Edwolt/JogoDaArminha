@@ -44,6 +44,12 @@ function Scene:new(path)
         self.blocks:draw(pos)
     end
 
+    function scene:drawDev(pos, color1, color2)
+        for _, i in self.blocks:ipairs() do
+            i:drawDev(pos, color1, color2)
+        end
+    end
+
     function scene:update(dt)
         self.blocks:update(dt)
     end

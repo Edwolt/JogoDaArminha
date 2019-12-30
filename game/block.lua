@@ -114,12 +114,12 @@ end
 function Water:update(dt)
     -- clock = clock - dt > 0 ? clock - dt : 0
     self.clock = self.clock - dt > 0 and self.clock - dt or 0
-    
+
     if self.clock <= 0 and self.hot <= 0 then
         changeBlock(self, Grass)
         self.clock = nil
     end
-    
+
     -- hot = hot - dt*K >= 0 ? hot - dt*K : 0
     self.hot = self.hot - dt >= 0 and self.hot - dt or 0
 end
@@ -169,6 +169,22 @@ function Block:new(pos, value)
         changeBlock(block, Grass)
     else
         changeBlock(block, Dirt)
+    end
+
+    function block:drawDev(pos, color1, color2)
+        local wall = self:getWall()
+        if wall then
+            local aux1 = wall.p1 - pos
+            local aux2 = wall.p2 - pos
+            Collider:new(aux1, aux2):draw(color1)
+        end
+        
+        local floor = self:getFloor()
+        if floor then
+            local aux1 = floor.p1 - pos
+            local aux2 = floor.p2 - pos
+            Collider:new(aux1, aux2):draw(color2)
+        end
     end
 
     return block

@@ -43,6 +43,13 @@ function Bullet:new(weapon, pos, vel)
         love.graphics.setColor(255, 255, 255)
     end
 
+    function bullet:drawDev(pos, color)
+        local area = self:getArea()
+        local aux1 = area.p1 - pos
+        local aux2 = area.p2 - pos
+        Collider:new(aux1, aux2):draw(color)
+    end
+
     function bullet:update(dt)
         self.pos = self.pos + self.vel * dt
     end

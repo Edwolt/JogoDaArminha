@@ -29,7 +29,8 @@ function Game:new()
             q = Key:new(0.2, "q"),
             e = Key:new(0.2, "e"),
             space = Key:new(0.25, "space")
-        }
+        },
+        dev = false -- Desenha colisores
     }
     setmetatable(game, self)
 
@@ -41,14 +42,15 @@ function Game:new()
         player_pos = player_pos - sprite_center
         local scene_pos = self.player.pos - player_pos
         self.scene:draw(scene_pos)
-        self.bullets:draw(scene_pos)
         self.player:draw(player_pos)
+        self.bullets:draw(scene_pos)
+        self.player:drawLife()
 
-        self.player:lifeDraw()
-        for _, i in self.bullets:ipairs() do
-            local a = i:getArea()
-            a.p1, a.p2 = a.p1 - scene_pos, a.p2 - scene_pos
-            a:draw(UTIL.game.scale, 255, 0, 0)
+        if self.dev then
+            --self.scene:drawDev(scene_pos)
+            self.scene:drawDev(scene_pos, {255, 0, 0}, {0, 255, 0})
+            self.player:drawDev(player_pos, {0, 0, 255})
+            self.bullets:drawDev(scene_pos, {255, 0, 255})
         end
     end
 
@@ -66,6 +68,7 @@ function Game:new()
         if self.key.e:press() then
             self.player.weapon = Elements.rightRotate(self.player.weapon)
         end
+        self.dev = love.keyboard.isDown("tab")
 
         local walk = 0
         if love.keyboard.isDown("a", "left") then

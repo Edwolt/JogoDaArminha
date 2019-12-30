@@ -27,6 +27,16 @@ function Array:new(class)
         end
     end
 
+    function array:drawDev(...)
+        if not self.vet[1] or not self.vet[1].drawDev then
+            return
+        end
+
+        for _,i in ipairs(self.vet) do
+            i:drawDev(...)
+        end
+    end
+
     function array:update(dt, ...)
         for _, i in ipairs(self.vet) do
             i:update(dt, ...)
