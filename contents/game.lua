@@ -22,7 +22,6 @@ function Game:new()
     local game = {
         player = Game.Player:new(Vec:new(65, 65), nil, Vec:new(0, UTIL.values.gravity)),
         bullets = Array:new(Game.Bullet),
-        scene = Game.Scene:new("level"),
         key = {
             q = Key:new(0.2, "q"),
             e = Key:new(0.2, "e"),
@@ -30,6 +29,9 @@ function Game:new()
         },
         dev = false -- Desenha colisores
     }
+    local s = Game.Scene:new("level")
+    game.scene = s.scene
+    game.player.pos = s.pos
     setmetatable(game, self)
 
     function game:draw()
