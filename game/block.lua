@@ -5,15 +5,7 @@ Modules = Modules or require "modules"
 local Dim = Modules.Dim
 local Collider = Modules.Collider
 
---*
-local Sprites = {}
-local Commons = {}
-local Dirt = {}
-local Grass = {}
-local Water = {}
-local Block = {}
-
---* Local functions
+--* Local Functions
 local nofunc = function()
 end
 

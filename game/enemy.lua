@@ -26,4 +26,9 @@ function Enemy:new(el, pos, vel, acc)
 
     return enemy
 end
+
+local Fire = {}
+local Water = {}
+local Plant = {}
+
 return Enemy

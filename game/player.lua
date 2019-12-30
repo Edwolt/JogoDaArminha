@@ -35,14 +35,14 @@ Player.__index = Player
 
 function Player:new(pos, vel, acc)
     local player = {
-        weapon = Elements.FIRE, -- 1:Fire; 2:Water; 3:Plant
+        weapon = Elements.FIRE,
         pos = pos or Vec:new(),
         vel = vel or Vec:new(),
         acc = acc or Vec:new(),
         shoot_vel = 450,
         dir = 1,
         onJump = false,
-        life = 30 -- TODO
+        life = 30
     }
     setmetatable(player, self)
 
