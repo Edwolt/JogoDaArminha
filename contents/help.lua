@@ -39,7 +39,7 @@ local Help = {
         newLine("Controles", 3, "center"),
         newLine("espaço atira"),
         newLine("wasd e setas movimenta"),
-        newLine("tab mostra colisores (ajudou muito a debugar)")
+        newLine("tab mostra colisores e o FPS")
     },
     vel_y = 250
 }
