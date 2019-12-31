@@ -29,7 +29,7 @@ function Spawn:new(pos, time)
     function spawn:spawn()
         if self.clock <= 0 then
             self.clock = time
-            return Enemy:new(Elements.DIRT, self.pos, Vec:new(500, 0), Vec:new(0, UTIL.gravity))
+            return Enemy:new(Elements.DIRT, self.pos, Vec:new(10, 0), Vec:new(0, UTIL.gravity))
         end
     end
 

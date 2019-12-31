@@ -38,7 +38,11 @@ function Enemy:new(el, pos, vel, acc)
         love.graphics.draw(self.sprite[self.element], real_pos.x, real_pos.y, 0, UTIL.game.scale, UTIL.game.scale)
     end
 
-    function enemy:drawDev(pos)
+    function enemy:drawDev(pos, color)
+        local col = self:getCollider()
+        local aux1 = col.p1 - pos
+        local aux2 = col.p2 - pos
+        Collider:new(aux1, aux2):draw(color)
     end
 
     function enemy:getCollider()

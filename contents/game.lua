@@ -6,6 +6,37 @@ local List = Modules.List
 local Vec = Modules.Vec
 local Key = Modules.Key
 
+local function collisionResolve(obj, col)
+    if col == nil then
+        return
+    end
+
+    local pcol = obj:getCollider()
+    local aux1 = col.p1 - pcol.p2
+    local aux2 = col.p2 - pcol.p1
+    local vec1 = Vec:new(aux1.x, 0)
+    local vec2 = Vec:new(0, aux1.y)
+    local vec3 = Vec:new(aux2.x, 0)
+    local vec4 = Vec:new(0, aux2.y)
+
+    local min = vec1
+    local vnum = 1
+    if vec2:norm() < min:norm() then
+        min = vec2
+        vnum = 2
+    end
+    if vec3:norm() < min:norm() then
+        min = vec3
+        vnum = 3
+    end
+    if vec4:norm() < min:norm() then
+        min = vec4
+        vnum = 4
+    end
+    obj.pos = obj.pos + min
+    return vnum
+end
+
 --* Game Class
 Contents = Contents or {}
 Contents.Game = Contents.Game or {}
@@ -51,7 +82,7 @@ function Game:new()
 
         if self.dev then
             self.scene:drawDev(scene_pos, {255, 255, 0}, {0, 255, 0})
-            -- self.enemys:drawDev(player_pos, {0, 0, 255})
+            self.enemys:drawDev(player_pos, {0, 255, 255})
             self.player:drawDev(player_pos, {0, 0, 255})
             self.bullets:drawDev(scene_pos, {255, 0, 255})
             love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), 10, 10)
@@ -84,10 +115,13 @@ function Game:new()
         end
 
         for _, i in self.spawns:ipairs() do
-            self.enemys:add(i:spawn())
+            local enemy = i:spawn()
+            if enemy then
+                self.enemys:add(enemy)
+            end
         end
         self.player:walk(walk)
-        
+
         -- Updates
         self.scene:update(dt)
         self.spawns:update(dt)
@@ -116,14 +150,34 @@ function Game:new()
         _, col = self.scene:wallCollision(self.player:getCollider())
         while col do
             if col then
-                self:collisionResolve(self.player, col)
+                local vnum = collisionResolve(self.player, col)
+                if vnum == 1 or vnum == 3 then
+                    self.player.vel.x = 0
+                elseif vnum == 4 and self.player.vel.y <= 0 then
+                    self.player.vel.y = 0
+                elseif vnum == 2 and self.player.vel.y >= 0 then
+                    self.player.vel.y = 0
+                end
                 _, col = self.scene:wallCollision(self.player:getCollider())
             end
         end
 
-        for _, enemy in self.enemys:ipairs() do
-            --local ecol = enemy:getCollider()
-        end
+        -- for _, enemy in self.enemys:ipairs() do
+        -- local ecol = enemy:getCollider()
+        --
+        -- _, col = self.scene:wallCollision(ecol)
+        -- if col then
+        -- local vnum = collisionResolve(enemy, col)
+        -- if vnum == 1 or vnum == 3 then
+        -- enemy:virar()
+        -- elseif vnum == 4 and enemy.vel.y <= 0 then
+        -- enemy.vel.y = 0
+        -- elseif vnum == 2 and enemy.vel.y >= 0 then
+        -- enemy.vel.y = 0
+        -- end
+        -- _, col = self.scene:wallCollision(ecol)
+        -- end
+        -- end
 
         for k, i in self.bullets:ipairs() do
             local col = i:getCollider()
@@ -131,44 +185,6 @@ function Game:new()
                 self.bullets:remove(k)
             end
             self.scene:changeBlocks(i.element, i:getArea())
-        end
-    end
-
-    function game:collisionResolve(player, col)
-        if col == nil then
-            return
-        end
-
-        local pcol = player:getCollider()
-        local aux1 = col.p1 - pcol.p2
-        local aux2 = col.p2 - pcol.p1
-        local vec1 = Vec:new(aux1.x, 0)
-        local vec2 = Vec:new(0, aux1.y)
-        local vec3 = Vec:new(aux2.x, 0)
-        local vec4 = Vec:new(0, aux2.y)
-
-        local min = vec1
-        local vnum = 1
-        if vec2:norm() < min:norm() then
-            min = vec2
-            vnum = 2
-        end
-        if vec3:norm() < min:norm() then
-            min = vec3
-            vnum = 3
-        end
-        if vec4:norm() < min:norm() then
-            min = vec4
-            vnum = 4
-        end
-        player.pos = player.pos + min
-
-        if vnum == 1 or vnum == 3 then
-            player.vel.x = 0
-        elseif vnum == 4 and player.vel.y <= 0 then
-            player.vel.y = 0
-        elseif vnum == 2 and player.vel.y >= 0 then
-            player.vel.y = 0
         end
     end
 
