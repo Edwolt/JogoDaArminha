@@ -15,13 +15,15 @@ Contents.Game.Enemy = Contents.Game.Enemy or require "game.enemy"
 local Enemy = Contents.Game.Enemy
 
 --* Spawn Class
-local Spawn = {}
+local Spawn = {
+    VEL = 250
+}
 Spawn.__index = Spawn
 
 function Spawn:new(pos, time)
     local spawn = {
         pos = pos,
-        clock = time,
+        clock = math.random(time),
         time = time or 5
     }
     setmetatable(spawn, self)
@@ -29,7 +31,16 @@ function Spawn:new(pos, time)
     function spawn:spawn()
         if self.clock <= 0 and love.timer.getFPS() >= 50 then --! Melhorar eficiencia para tirar esse condional
             self.clock = time
-            return Enemy:new(Elements.DIRT, self.pos, Vec:new(500, 0), Vec:new(0, UTIL.gravity))
+            local rand = math.random(0, 100)
+            if rand < 55 then
+                return Enemy:new(Elements.DIRT, self.pos, Vec:new(self.VEL, 0), Vec:new(0, UTIL.gravity))
+            elseif rand < 70 then
+                return Enemy:new(Elements.FIRE, self.pos, Vec:new(self.VEL, 0), Vec:new(0, UTIL.gravity))
+            elseif rand < 85 then
+                return Enemy:new(Elements.WATER, self.pos, Vec:new(self.VEL, 0), Vec:new(0, UTIL.gravity))
+            else
+                return Enemy:new(Elements.PLANT, self.pos, Vec:new(self.VEL, 0), Vec:new(0, UTIL.gravity))
+            end
         end
     end
 
@@ -73,7 +84,7 @@ function Scene:new(path)
                 scene.blocks:add(pos, Elements.DIRT)
             elseif layer.data[k] == 3 then
                 local pos = Vec:new(x * tilemap.tilewidth, y * tilemap.tileheight)
-                spawns:add(pos, 1)
+                spawns:add(pos, 10)
             elseif layer.data[k] == 4 then
                 position = Vec:new(x * tilemap.tilewidth, y * tilemap.tileheight)
             end
