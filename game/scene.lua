@@ -20,7 +20,8 @@ function Scene:new(path)
     local tilemap = require("tilemap/" .. path)
     local layer = tilemap.layers[1]
 
-    local scene = {blocks = Array:new(Block), spawn = Array:new(Vec)}
+    local scene = {blocks = Array:new(Block)}
+    local spawn = Array:new(Vec)
     local position = Vec:new()
     setmetatable(scene, self)
 
@@ -38,7 +39,7 @@ function Scene:new(path)
                 local pos = Vec:new(x * tilemap.tilewidth, y * tilemap.tileheight)
                 scene.blocks:add(pos, Elements.DIRT)
             elseif layer.data[k] == 3 then
-                scene.spawn:add(x * tilemap.tilewidth, y * tilemap.tileheight)
+                spawn:add(x * tilemap.tilewidth, y * tilemap.tileheight)
             elseif layer.data[k] == 4 then
                 position = Vec:new(x * tilemap.tilewidth, y * tilemap.tileheight)
             end
@@ -86,7 +87,7 @@ function Scene:new(path)
         end
     end
 
-    return {pos = position, scene = scene}
+    return {pos = position, spawn = spawn, scene = scene}
 end
 
 return Scene

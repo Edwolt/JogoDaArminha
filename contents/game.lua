@@ -32,6 +32,7 @@ function Game:new()
     local s = Game.Scene:new("level")
     game.scene = s.scene
     game.player.pos = s.pos
+    game.spawn = s.spawn
     setmetatable(game, self)
 
     function game:draw()
