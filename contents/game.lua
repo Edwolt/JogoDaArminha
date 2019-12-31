@@ -21,6 +21,7 @@ Game.__index = Game
 function Game:new()
     local game = {
         player = Game.Player:new(Vec:new(65, 65), nil, Vec:new(0, UTIL.values.gravity)),
+        enemys = Array:new(Game.Enemy),
         bullets = Array:new(Game.Bullet),
         key = {
             q = Key:new(0.2, "q"),
@@ -44,6 +45,7 @@ function Game:new()
         local scene_pos = self.player.pos - player_pos
         self.scene:draw(scene_pos)
         self.player:draw(player_pos)
+        self.enemys:draw(scene_pos)
         self.bullets:draw(scene_pos)
         self.player:drawLife()
 
@@ -78,8 +80,13 @@ function Game:new()
         if love.keyboard.isDown("d", "right") then
             walk = walk + 1
         end
-        self.player:walk(walk)
 
+        for _, i in self.spawn:ipairs() do
+            self.enemys:add(Elements.Fire, i, Vec:new(500, 0), Vec:new(0, UTIL.values.gravity))
+        end
+
+        self.player:walk(walk)
+        self.enemys:update(dt)
         self.scene:update(dt)
         self.player:update(dt)
         self.bullets:update(dt)
@@ -107,6 +114,10 @@ function Game:new()
                 self:collisionResolve(self.player, col)
                 _, col = self.scene:wallCollision(self.player:getCollider())
             end
+        end
+
+        for _, enemy in self.enemys:ipairs() do
+            --local ecol = enemy:getCollider()
         end
 
         for k, i in self.bullets:ipairs() do
