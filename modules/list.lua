@@ -1,15 +1,15 @@
---* Array Class
-local Array = {}
-Array.__index = Array
+--* List Class
+local List = {}
+List.__index = List
 
-function Array:new(class)
-    local array = {
+function List:new(class)
+    local list = {
         vet = {},
         class = class
     }
-    setmetatable(array, self)
+    setmetatable(list, self)
 
-    function array:add(obj, ...)
+    function list:add(obj, ...)
         if getmetatable(obj) == class then
             table.insert(self.vet, obj)
         else
@@ -17,17 +17,17 @@ function Array:new(class)
         end
     end
 
-    function array:remove(k)
+    function list:remove(k)
         table.remove(self.vet, k)
     end
 
-    function array:draw(...)
+    function list:draw(...)
         for _, i in ipairs(self.vet) do
             i:draw(...)
         end
     end
 
-    function array:drawDev(...)
+    function list:drawDev(...)
         if not self.vet[1] or not self.vet[1].drawDev then
             return
         end
@@ -37,16 +37,16 @@ function Array:new(class)
         end
     end
 
-    function array:update(dt, ...)
+    function list:update(dt, ...)
         for _, i in ipairs(self.vet) do
             i:update(dt, ...)
         end
     end
 
-    function array:ipairs()
+    function list:ipairs()
         return ipairs(self.vet)
     end
-    return array
+    return list
 end
 
-return Array
+return List

@@ -4,7 +4,7 @@ Enums = Enums or require "enums"
 local Elements = Enums.Elements
 
 Modules = Modules or require "modules"
-local Array = Modules.Array
+local List = Modules.List
 local Vec = Modules.Vec
 
 Contents = Contents or {}
@@ -53,8 +53,8 @@ function Scene:new(path)
     local tilemap = require("tilemap/" .. path)
     local layer = tilemap.layers[1]
 
-    local scene = {blocks = Array:new(Block)}
-    local spawn = Array:new(Spawn)
+    local scene = {blocks = List:new(Block)}
+    local spawns = List:new(Spawn)
     local position = Vec:new()
     setmetatable(scene, self)
 
@@ -73,7 +73,7 @@ function Scene:new(path)
                 scene.blocks:add(pos, Elements.DIRT)
             elseif layer.data[k] == 3 then
                 local pos = Vec:new(x * tilemap.tilewidth, y * tilemap.tileheight)
-                spawn:add(pos, 1)
+                spawns:add(pos, 1)
             elseif layer.data[k] == 4 then
                 position = Vec:new(x * tilemap.tilewidth, y * tilemap.tileheight)
             end
@@ -121,7 +121,7 @@ function Scene:new(path)
         end
     end
 
-    return {pos = position, spawn = spawn, scene = scene}
+    return {pos = position, spawns = spawns, scene = scene}
 end
 
 return Scene

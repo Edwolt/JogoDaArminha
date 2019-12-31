@@ -2,7 +2,7 @@ Enums = Enums or require "enums"
 local Elements = Enums.Elements
 
 Modules = Modules or require "modules"
-local Array = Modules.Array
+local List = Modules.List
 local Vec = Modules.Vec
 local Key = Modules.Key
 
@@ -21,8 +21,8 @@ Game.__index = Game
 function Game:new()
     local game = {
         player = Game.Player:new(Vec:new(65, 65), nil, Vec:new(0, UTIL.gravity)),
-        enemys = Array:new(Game.Enemy),
-        bullets = Array:new(Game.Bullet),
+        enemys = List:new(Game.Enemy),
+        bullets = List:new(Game.Bullet),
         key = {
             q = Key:new(0.2, "q"),
             e = Key:new(0.2, "e"),
@@ -33,7 +33,7 @@ function Game:new()
     local s = Game.Scene:new("level")
     game.scene = s.scene
     game.player.pos = s.pos
-    game.spawn = s.spawn
+    game.spawns = s.spawns
     setmetatable(game, self)
 
     function game:draw()
@@ -83,7 +83,7 @@ function Game:new()
             walk = walk + 1
         end
 
-        for _, i in self.spawn:ipairs() do
+        for _, i in self.spawns:ipairs() do
             self.enemys:add(i:spawn())
         end
         self.player:walk(walk)
