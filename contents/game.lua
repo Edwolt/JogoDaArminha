@@ -82,7 +82,7 @@ function Game:new()
 
         if self.dev then
             self.scene:drawDev(scene_pos, {255, 255, 0}, {0, 255, 0})
-            self.enemys:drawDev(player_pos, {0, 255, 255})
+            self.enemys:drawDev(scene_pos, {0, 255, 255})
             self.player:drawDev(player_pos, {0, 0, 255})
             self.bullets:drawDev(scene_pos, {255, 0, 255})
             love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), 10, 10)
@@ -162,23 +162,24 @@ function Game:new()
             end
         end
 
-        -- for _, enemy in self.enemys:ipairs() do
-        -- local ecol = enemy:getCollider()
-        --
-        -- _, col = self.scene:wallCollision(ecol)
-        -- if col then
-        -- local vnum = collisionResolve(enemy, col)
-        -- if vnum == 1 or vnum == 3 then
-        -- enemy:virar()
-        -- elseif vnum == 4 and enemy.vel.y <= 0 then
-        -- enemy.vel.y = 0
-        -- elseif vnum == 2 and enemy.vel.y >= 0 then
-        -- enemy.vel.y = 0
-        -- end
-        -- _, col = self.scene:wallCollision(ecol)
-        -- end
-        -- end
+        for _, enemy in self.enemys:ipairs() do
+            local ecol = enemy:getCollider()
 
+            i, col = self.scene:wallCollision(ecol)
+            if col then
+                local vnum = collisionResolve(enemy, col)
+                if (vnum == 1 or vnum == 3) and (not i:getFloor()) then
+                    enemy:virar()
+                elseif vnum == 4 and enemy.vel.y <= 0 then
+                    enemy.vel.y = 0
+                elseif vnum == 2 and enemy.vel.y >= 0 then
+                    enemy.vel.y = 0
+                end
+                i, col = self.scene:wallCollision(ecol)
+            end
+        end
+
+        -- Bullet
         for k, i in self.bullets:ipairs() do
             local col = i:getCollider()
             if self.scene:wallCollision(col) then

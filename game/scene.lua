@@ -27,9 +27,9 @@ function Spawn:new(pos, time)
     setmetatable(spawn, self)
 
     function spawn:spawn()
-        if self.clock <= 0 then
+        if self.clock <= 0 and love.timer.getFPS() >= 50 then --! Melhorar eficiencia para tirar esse condional
             self.clock = time
-            return Enemy:new(Elements.DIRT, self.pos, Vec:new(10, 0), Vec:new(0, UTIL.gravity))
+            return Enemy:new(Elements.DIRT, self.pos, Vec:new(500, 0), Vec:new(0, UTIL.gravity))
         end
     end
 
