@@ -85,9 +85,11 @@ function Player:new(pos, vel, acc)
 
     function player:shoot()
         local pos = self.pos:copy()
-        if self.dir == 1 then
+        if self.dir == -1 then
             pos.x = pos.x + self.tam.width
         end
+        pos.y = pos.y + 8
+        pos.x = pos.x + 28 * self.dir
         return Bullet:new(self.weapon, pos, Vec:new(self.dir * self.shoot_vel, 0))
     end
 
