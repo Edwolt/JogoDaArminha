@@ -10,11 +10,9 @@ UTIL.game.height = 500
 UTIL.game.scale = UTIL.window.height / UTIL.game.height
 UTIL.game.width = UTIL.window.width / UTIL.game.scale
 
-UTIL.values = {
-    gravity = 1000
-}
+UTIL.gravity = 1000
 
---* Wrapper Function para love.graphic.printf
+--* Wrapper Function for love.graphic.printf
 function UTIL.printw(text, font, x, y, limit, align, scale)
     x = x or 0
     y = y or 0

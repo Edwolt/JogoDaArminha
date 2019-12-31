@@ -20,7 +20,7 @@ Game.__index = Game
 
 function Game:new()
     local game = {
-        player = Game.Player:new(Vec:new(65, 65), nil, Vec:new(0, UTIL.values.gravity)),
+        player = Game.Player:new(Vec:new(65, 65), nil, Vec:new(0, UTIL.gravity)),
         enemys = Array:new(Game.Enemy),
         bullets = Array:new(Game.Bullet),
         key = {
@@ -82,7 +82,7 @@ function Game:new()
         end
 
         for _, i in self.spawn:ipairs() do
-            self.enemys:add(Elements.Fire, i, Vec:new(500, 0), Vec:new(0, UTIL.values.gravity))
+            self.enemys:add(Elements.Fire, i, Vec:new(500, 0), Vec:new(0, UTIL.gravity))
         end
 
         self.player:walk(walk)
