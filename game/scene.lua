@@ -21,7 +21,7 @@ Spawn.__index = Spawn
 function Spawn:new(pos, time)
     local spawn = {
         pos = pos,
-        clock = 1,
+        clock = time,
         time = time or 5
     }
     setmetatable(spawn, self)

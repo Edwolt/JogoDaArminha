@@ -1,3 +1,6 @@
+UTIL = UTIL or require "util"
+Fonts = Fonts or require "fonts"
+
 Enums = Enums or require "enums"
 local Elements = Enums.Elements
 
@@ -59,7 +62,8 @@ function Game:new()
             e = Key:new(0.2, "e"),
             space = Key:new(0.25, "space")
         },
-        dev = false -- Draw the colliders
+        dev = false, -- Draw the colliders
+        score = 0
     }
     local s = Game.Scene:new("level")
     game.scene = s.scene
@@ -85,8 +89,10 @@ function Game:new()
             self.enemys:drawDev(scene_pos, {0, 255, 255})
             self.player:drawDev(player_pos, {0, 0, 255})
             self.bullets:drawDev(scene_pos, {255, 0, 255})
-            love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), 10, 10)
+            UTIL.printw("FPS: " .. love.timer.getFPS(), Fonts.PressStart2P, 5, 5, UTIL.window.width - 100, "left", 1)
         end
+
+        UTIL.printw("Score: " .. self.score, Fonts.PressStart2P, 50, 50, UTIL.window.width - 100, "left", 3)
     end
 
     function game:update(dt)
@@ -165,6 +171,13 @@ function Game:new()
         for _, enemy in self.enemys:ipairs() do
             local ecol = enemy:getCollider()
 
+            i, col = self.scene:floorCollision(ecol)
+            if col then
+                if i.element == Elements.WATER and i.hot >= 1 then
+                    enemy.life = enemy.life - i.hot * dt
+                end
+            end
+
             i, col = self.scene:wallCollision(ecol)
             if col then
                 local vnum = collisionResolve(enemy, col)
@@ -185,7 +198,21 @@ function Game:new()
             if self.scene:wallCollision(col) then
                 self.bullets:remove(k)
             end
+            for _, enemy in self.enemys:ipairs() do
+                if enemy:getCollider():collision(col) then
+                    enemy.life = enemy.life - 5
+                    self.bullets:remove(k)
+                end
+            end
             self.scene:changeBlocks(i.element, i:getArea())
+        end
+
+        -- Remove died enemys
+        for k, i in self.enemys:ipairs() do
+            if i.life <= 0 then
+                self.score = self.score + 1
+                self.enemys:remove(k)
+            end
         end
     end
 
