@@ -14,6 +14,7 @@ Credits = {
     lines = {
         newLine("Creditos", 7),
         newLine(),
+        newLine(),
         newLine("Autores:", 5),
         newLine("Eduardo Souza Rocha"),
         newLine("Victor Isaias de Almeida Rocha")

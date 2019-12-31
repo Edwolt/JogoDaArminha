@@ -2,21 +2,44 @@ Fonts = Fonts or require "fonts"
 UTIL = UTIL or require "util"
 
 --* Line Table
-local function newLine(text, scale)
+local function newLine(text, scale, align)
     return {
         text = text or "",
-        scale = scale or 3
+        scale = scale or 2,
+        align = align or "left"
     }
 end
 
 --* Help Class
 local Help = {
     lines = {
-        newLine("Instruções", 7),
-        newLine(),
+        newLine("Instruções", 5, "center"),
         newLine(
             "Para ver as instruções entre no menu principal, use as setas ou o ws para selecionar instruções e aperte enter"
-        )
+        ),
+        newLine(),
+        newLine(),
+        newLine("Objetivo", 3, "center"),
+        newLine("O Objetivo do jogo é matar o máximo de inimigos possíveis"),
+        newLine("Quanto mais inimigos você matar, maior será sua pontuação"),
+        newLine("Você tem 3 tipos de armas diferente, arma de fogo, água e planta"),
+        newLine(),
+        newLine("Armas", 3, "center"),
+        newLine(">Fogos", 2.25),
+        newLine("Se passar por um bloco molhado ele aquece e passa a dar dano em que o toca"),
+        newLine(),
+        newLine(">Água", 2.25),
+        newLine("Molha cada bloco que passa"),
+        newLine(),
+        newLine(">Planta", 2.25),
+        newLine(),
+        newLine("História", 3, "center"),
+        newLine("Estava tão ocupado fazendo o jogo que esqueci de criar a história do jogo"),
+        newLine(),
+        newLine("Controles", 3, "center"),
+        newLine("espaço atira"),
+        newLine("wasd e setas movimenta"),
+        newLine("tab mostra colisores (ajudou muito a debugar)")
     },
     vel_y = 250
 }
@@ -32,16 +55,17 @@ function Help:new()
         local y = self.pos_y
         local limit = (UTIL.window.width - 100)
         for _, i in ipairs(self.lines) do
-            y = y + UTIL.printw(i.text, Fonts.PressStart2P, 50, y, limit, "center", i.scale)
+            y = y + UTIL.printw(i.text, Fonts.PressStart2P, 50, y, limit, i.align, i.scale)
         end
     end
 
     function help:update(dt)
         if love.keyboard.isDown("s", "down") then
-            self.pos_y = self.pos_y + dt * self.vel_y
-        end
-        if love.keyboard.isDown("w", "up") then
             self.pos_y = self.pos_y - dt * self.vel_y
+        end
+
+        if love.keyboard.isDown("w", "up") then
+            self.pos_y = self.pos_y + dt * self.vel_y
         end
     end
 
