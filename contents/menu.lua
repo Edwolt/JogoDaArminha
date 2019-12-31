@@ -60,6 +60,10 @@ function Menu:new()
         local y = 50
         y = y + UTIL.printw("Jogo da Arminha", Fonts.PressStart2P, 50, y, limit, "center", 5)
         y = y + 50
+        if UTIL.score then
+            y = y + UTIL.printw("High Score:" .. UTIL.score, Fonts.PressStart2P, 50, y, limit, "center", 4)
+        end
+        y = y + 50
         y = y + UTIL.printw(text, Fonts.PressStart2P, 50, y, limit, "center", 3)
         y = y + 200
         local x = UTIL.window.width / 2 - 150

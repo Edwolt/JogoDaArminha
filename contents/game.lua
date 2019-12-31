@@ -207,6 +207,16 @@ function Game:new()
             self.scene:changeBlocks(i.element, i:getArea())
         end
 
+        if self.player.life <= 0 then
+            if UTIL.score then
+                -- highscore = highscore < score ? score : highscore
+                UTIL.score = UTIL.score < self.score and self.score or UTIL.score
+            else
+                UTIL.score = self.score
+            end
+            return "Menu"
+        end
+
         -- Remove died enemys
         for k, i in self.enemys:ipairs() do
             if i.life <= 0 then
