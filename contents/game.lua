@@ -50,10 +50,11 @@ function Game:new()
         self.player:drawLife()
 
         if self.dev then
-            --self.scene:drawDev(scene_pos)
             self.scene:drawDev(scene_pos, {255, 255, 0}, {0, 255, 0})
+            -- self.enemys:drawDev(player_pos, {0, 0, 255})
             self.player:drawDev(player_pos, {0, 0, 255})
             self.bullets:drawDev(scene_pos, {255, 0, 255})
+            love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), 10, 10)
         end
     end
 
@@ -62,6 +63,7 @@ function Game:new()
             i:update(dt)
         end
 
+        -- Inputs
         if self.key.space:press() then
             self.bullets:add(self.player:shoot())
         end
@@ -82,15 +84,18 @@ function Game:new()
         end
 
         for _, i in self.spawn:ipairs() do
-            self.enemys:add(Elements.Fire, i, Vec:new(500, 0), Vec:new(0, UTIL.gravity))
+            self.enemys:add(i:spawn())
         end
-
         self.player:walk(walk)
-        self.enemys:update(dt)
+        
+        -- Updates
         self.scene:update(dt)
+        self.spawns:update(dt)
+        self.enemys:update(dt)
         self.player:update(dt)
         self.bullets:update(dt)
 
+        -- Collisions
         local i, col = self.scene:floorCollision(self.player:getCollider())
         if col then
             if i.element == Elements.WATER and i.hot >= 1 then

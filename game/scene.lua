@@ -11,6 +11,39 @@ Contents = Contents or {}
 Contents.Game = Contents.Game or {}
 Contents.Game.Block = Contents.Game.Block or require "game.block"
 local Block = Contents.Game.Block
+Contents.Game.Enemy = Contents.Game.Enemy or require "game.enemy"
+local Enemy = Contents.Game.Enemy
+
+--* Spawn Class
+local Spawn = {}
+Spawn.__index = Spawn
+
+function Spawn:new(pos, time)
+    local spawn = {
+        pos = pos,
+        clock = 1,
+        time = time or 1
+    }
+    setmetatable(spawn, self)
+
+    function spawn:spawn()
+        if self.clock <= 0 then
+            self.clock = time
+            return Enemy:new(Elements.DIRT, self.pos, Vec:new(500, 0), Vec:new(0, UTIL.gravity))
+        end
+    end
+
+    function spawn:forceSpawn()
+        return Enemy:new(Elements.DIRT, self.pos, Vec:new(500, 0), Vec:new(0, UTIL.gravity))
+    end
+
+    function spawn:update(dt)
+        -- clock = clock - dt > 0 ? self.clock : 0
+        self.clock = self.clock - dt > 0 and self.clock - dt or 0
+    end
+
+    return spawn
+end
 
 --* Scene Class
 local Scene = {}
@@ -21,7 +54,7 @@ function Scene:new(path)
     local layer = tilemap.layers[1]
 
     local scene = {blocks = Array:new(Block)}
-    local spawn = Array:new(Vec)
+    local spawn = Array:new(Spawn)
     local position = Vec:new()
     setmetatable(scene, self)
 
@@ -39,7 +72,8 @@ function Scene:new(path)
                 local pos = Vec:new(x * tilemap.tilewidth, y * tilemap.tileheight)
                 scene.blocks:add(pos, Elements.DIRT)
             elseif layer.data[k] == 3 then
-                spawn:add(x * tilemap.tilewidth, y * tilemap.tileheight)
+                local pos = Vec:new(x * tilemap.tilewidth, y * tilemap.tileheight)
+                spawn:add(pos, 1)
             elseif layer.data[k] == 4 then
                 position = Vec:new(x * tilemap.tilewidth, y * tilemap.tileheight)
             end
