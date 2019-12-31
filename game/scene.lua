@@ -22,7 +22,7 @@ function Spawn:new(pos, time)
     local spawn = {
         pos = pos,
         clock = 1,
-        time = time or 1
+        time = time or 5
     }
     setmetatable(spawn, self)
 
