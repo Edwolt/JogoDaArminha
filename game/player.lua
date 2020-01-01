@@ -76,6 +76,10 @@ function Player:new(pos, vel, acc)
         local col = self:getCollider()
         local aux = col.p2 - col.p1
         Collider:new(pos, pos + aux):draw(color)
+        pos.y = pos.y - 5
+        pos = pos * UTIL.game.scale
+        local text = tostring(math.floor(self.life * 1000) / 1000)
+        UTIL.printw(text, Fonts.PressStart2P, pos.x - 20, pos.y, self.tam.width * UTIL.game.scale + 40, "center", 1)
     end
 
     function player:update(dt)

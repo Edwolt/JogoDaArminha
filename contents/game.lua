@@ -140,9 +140,6 @@ function Game:new()
         if col then
             if i.element == Elements.WATER and i.hot >= 1 then
                 self.player.life = self.player.life - i.hot * dt
-                if self.player.life < 0 then
-                    return "Menu"
-                end
             end
             if love.keyboard.isDown("w", "up") then
                 self.player:jump()
@@ -192,6 +189,12 @@ function Game:new()
             end
         end
 
+        for _, i in self.enemys:ipairs() do
+            if i:getCollider():collision(self.player:getCollider()) then
+                self.player.life = self.player.life - 20 * dt
+            end
+        end
+
         -- Bullet
         for k, i in self.bullets:ipairs() do
             local col = i:getCollider()
@@ -200,7 +203,7 @@ function Game:new()
             end
             for _, enemy in self.enemys:ipairs() do
                 if enemy:getCollider():collision(col) then
-                    enemy.life = enemy.life - 5
+                    enemy:bulletDamage(i.element)
                     self.bullets:remove(k)
                 end
             end
@@ -230,6 +233,7 @@ function Game:new()
         return "Menu"
     end
 
+    math.randomseed(os.time())
     return game
 end
 
