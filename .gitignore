@@ -1,6 +1,7 @@
 .vscode/*
 placeholder/*
 Piskel/*
+*.backup
 
 # Compiled Lua sources
 luac.out
